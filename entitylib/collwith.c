@@ -72,6 +72,6 @@ void collwith_fired(entity_t *entity, collider_t *data)
     while (++i < data->nb_fired) {
         j = -1;
         while (++j < data->fired[i].len)
-            collide_with_custom(entity, data->fired[i].list[j]);
+            collide_custom_only(entity, data->fired[i].list[j]);
     }
 }

@@ -19,3 +19,10 @@ void collwith_mob(entity_t *entity, collider_t *data)
             collide_with_custom(entity, data->solid_static[i].list[j]);
     }
 }
+
+void collwith_player(entity_t *entity, collider_t *data)
+{
+    if (entity == NULL)
+        return;
+    collide_with_custom(data->player, entity);
+}

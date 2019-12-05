@@ -26,13 +26,14 @@ static int load_entitylist(int fd, entitylist_t *elist, data_storage_t *datas)
     entity_t **entities = datas->entities;
     entity_t *tmp;
     int i = -1;
+    pos_t pos = {{0, 0}, {0, 0}};
 
     if (read(fd, nb_alive_entities.raw, 2) != 2)
         return (84);
     while (++i < nb_alive_entities.value) {
         if (read(fd, conv.raw, sizeof(conv)) != sizeof(conv))
             return (84);
-        tmp = new_instance(entities[conv.data.id_master], NULL, NULL, 0);
+        tmp = new_instance(entities[conv.data.id_master], pos, pos.v1, 0);
         load_entity(tmp, &conv);
         elist->list[i] = tmp;
     }

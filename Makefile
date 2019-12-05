@@ -23,11 +23,13 @@ FILES = entitylib/basic_entity.c \
 	entitylib/entitylist.c \
 	entitylib/g_entity.c \
 	entitylib/internal_data.c \
+	entitylib/player.c \
 	entitylib/score.c \
 	entitylib/surface.c \
 	entitylib/tools.c \
 	entitylib/window_action.c \
 	entitylib/window_manager.c \
+	load_map.c \
 	main.c \
 	my_read.c
 

@@ -44,15 +44,7 @@ typedef struct entitylist {
 } entitylist_t;
 
 typedef struct {
-    sfSprite **sprite;
-    int health;
-    float timer;
-    float frame_delay;
-    uchar_t frame_dec;
-    uchar_t frame;
-    pos_t pos;
-    sfVector2f vel;
-    uint_t *size;
+    entity_t *entity;
 } player_t;
 
 #endif /* ENTITYBASE_H_ */
