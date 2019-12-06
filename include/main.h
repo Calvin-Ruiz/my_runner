@@ -26,6 +26,7 @@ typedef struct param {
 } param_t;
 
 char **load_map(const char *filename, long int *len, int *nb_cols);
+void mainloop(data_storage_t *datas);
 
 static inline int apply_parameter(int i, char **args, param_t *parameters)
 {
@@ -76,9 +77,8 @@ static inline int my_init_uninit(char **map, param_t *params, int nb_cols, long 
     if (init_heart_and_score(datas->textures[1], datas->textures[0]))
         return (84);
     mainloop(datas);
-    free_storage_content(datas, 61);
+    free_storage_content(datas, 63);
     destroy_heart_and_score();
-    destroy_window(datas);
     free(*map - 1);
     free(map);
     return (0);

@@ -54,8 +54,9 @@ void mainloop(data_storage_t *datas)
 static int my_init(char **map, param_t *params, int nb_cols, long int len)
 {
     data_storage_t *datas = init_data_storage(0, 2, 0, 0);
-    create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32}, "My Runner",
-        sfClose | sfResize, params->fps);
+    if (create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32}, "My Runner",
+        sfClose | sfResize, params->fps))
+        return (84);
     datas->textures[0] = sfTexture_createFromFile("textures/end.png", NULL);
     datas->textures[1] = sfTexture_createFromFile("textures/heart.png", NULL);
     if (check_data_storage_content(datas) & 11) {
