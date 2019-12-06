@@ -7,6 +7,12 @@
 #include "include/entitylib.h"
 #include "include/converters.h"
 
+data_storage_t *get_data_storage(void)
+{
+    static data_storage_t storage;
+    return (&storage);
+}
+
 static void init_data_storage_2(data_storage_t *datas)
 {
     int_to_raw_t conv;

@@ -27,17 +27,12 @@ typedef struct data_storage {
     sfClock *clock;
 } data_storage_t;
 
+data_storage_t *get_data_storage(void);
 data_storage_t *init_data_storage(int nb_sounds, int nb_textures,
     int nb_entity, int nb_entitylist);
 int check_data_storage_content(data_storage_t *datas);
 void free_storage_content(data_storage_t *datas, int mask);
 void update_all(data_storage_t *datas);
 void import_sound(data_storage_t *datas, const char *filename, int pos);
-
-static inline data_storage_t *get_data_storage(void)
-{
-    static data_storage_t storage[1];
-    return (storage);
-}
 
 #endif /* DATA_STORAGE_H_ */

@@ -59,8 +59,10 @@ void destroy_window(data_storage_t *stor)
     sfRenderWindow_destroy(stor->window);
     sfTexture_destroy(datas->cursor_skin);
     sfTexture_destroy(datas->pause_skin);
+    sfTexture_destroy(datas->background_skin);
     sfSprite_destroy(datas->cursor);
     sfSprite_destroy(datas->pause);
+    sfSprite_destroy(datas->background);
     sfImage_destroy(datas->icon);
 }
 

@@ -10,9 +10,7 @@
 
 #include "my_getnbr.h"
 #include "my_read.h"
-#include "../entitylib/include/entity.h"
-#include "../entitylib/include/entitylist.h"
-#include "../entitylib/include/data_storage.h"
+#include "../entitylib/include/entitylib.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -70,6 +68,20 @@ static inline void load_line (char **map, int col, int nb_cols,
             entitylist_append(datas->entitylists[map[col][i] >> 6], entity);
         }
     }
+}
+
+static inline int my_init_uninit(char **map, param_t *params, int nb_cols, long int len)
+{
+    data_storage_t *datas = get_data_storage();
+    if (init_heart_and_score(datas->textures[1], datas->textures[0]))
+        return (84);
+    mainloop(datas);
+    free_storage_content(datas, 61);
+    destroy_heart_and_score();
+    destroy_window(datas);
+    free(*map - 1);
+    free(map);
+    return (0);
 }
 
 #endif /* MAIN_H_ */

@@ -26,9 +26,44 @@ static void my_help(int n, char **args)
     free(str);
 }
 
-static void my_init(char **map, param_t *params, int nb_cols, long int len)
+static void my_events(sfRenderWindow *window, data_storage_t *datas)
 {
-    
+    sfEvent event;
+
+    while (sfRenderWindow_pollEvent(window, &event)) {
+        if (event.type == sfEvtClosed)
+            sfRenderWindow_close(window);
+        if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
+            my_pause_game(window, datas);
+        if (event.type == sfEvtKeyPressed && event.key.code == sfKeyF12)
+            my_take_screenshoot(window, datas);
+    }
+}
+
+void mainloop(data_storage_t *datas)
+{
+    internal_data_t *internal_datas = get_internal_data();
+    sfRenderWindow *window = datas->window;
+    while (sfRenderWindow_isOpen(datas->window)) {
+        display_health_and_score(window, datas, internal_datas);
+        my_events(window, datas);
+        update_window(window, internal_datas, datas);
+    }
+}
+
+static int my_init(char **map, param_t *params, int nb_cols, long int len)
+{
+    data_storage_t *datas = init_data_storage(0, 2, 0, 0);
+    create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32}, "My Runner",
+        sfClose | sfResize, params->fps);
+    datas->textures[0] = sfTexture_createFromFile("textures/end.png", NULL);
+    datas->textures[1] = sfTexture_createFromFile("textures/heart.png", NULL);
+    if (check_data_storage_content(datas) & 11) {
+        if ((check_data_storage_content(datas) & 1) == 0)
+            free_storage_content(datas, 11);
+        return (84);
+    }
+    return (my_init_uninit(map, params, nb_cols, len));
 }
 
 int main(int nargs, char **args)
@@ -50,6 +85,6 @@ int main(int nargs, char **args)
     char **map = load_map(params->name, &len, &nb_cols);
     if (map == NULL)
         return (84);
-    my_init(map, params, nb_cols, len);
-    return (0);
+    int exit_mode = my_init(map, params, nb_cols, len);
+    return (exit_mode);
 }
