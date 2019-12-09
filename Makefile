@@ -17,8 +17,10 @@ FILES = entitylib/collider/collider.c \
 	entitylib/data_center/data_storage.c \
 	entitylib/data_center/data_storage_tools.c \
 	entitylib/data_center/internal_data.c \
-	entitylib/displays.c \
-	entitylib/display_thread.c \
+	entitylib/display/displays.c \
+	entitylib/display/display_thread.c \
+	entitylib/display/window_action.c \
+	entitylib/display/window_manager.c \
 	entitylib/entities/bonus.c \
 	entitylib/entities/g_entity.c \
 	entitylib/entities/score.c \
@@ -27,8 +29,6 @@ FILES = entitylib/collider/collider.c \
 	entitylib/entitylist.c \
 	entitylib/player.c \
 	entitylib/tools.c \
-	entitylib/window_action.c \
-	entitylib/window_manager.c \
 	load_map.c \
 	main.c \
 	my_read.c
@@ -36,8 +36,7 @@ FILES = entitylib/collider/collider.c \
 all :	$(NAME)
 
 $(NAME):
-	gcc -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I\
- entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 
 clean:
 	rm -f *.o
@@ -75,6 +74,6 @@ update:
 	./mmkfile.sh MUL_my_runner my_runner
 
 $(LIB).a:
-	gcc -c $(LIB)/*\.c
+	gcc -c $(LIB)/*\.c $(LIB)/*/*\.c -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 	ar rc $(LIB).a *\.o
 	rm -f *\.o

@@ -55,6 +55,6 @@ update:
 	./mmkfile.sh $1 $2
 
 \$(LIB).a:
-	gcc -c \$(LIB)/*\.c \$(LIB)/*/*\.c
+	gcc -c \$(LIB)/*\.c \$(LIB)/*/*\.c -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 	ar rc \$(LIB).a *\.o
 	rm -f *\.o" >> "Makefile"
