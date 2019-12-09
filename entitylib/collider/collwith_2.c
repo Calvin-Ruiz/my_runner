@@ -4,7 +4,7 @@
 ** File description:
 ** collwith_2.c
 */
-#include "include/internal_collider.h"
+#include <internal_collider.h>
 
 void collwith_mob(entity_t *entity, collider_t *data)
 {
@@ -15,8 +15,8 @@ void collwith_mob(entity_t *entity, collider_t *data)
 
     while (++i < data->nb_mob) {
         j = -1;
-        while (++j < data->solid_static[i].len)
-            collide_with_custom(entity, data->solid_static[i].list[j]);
+        while (++j < data->solid_static[i]->len)
+            collide_with_custom(entity, data->solid_static[i]->list[j]);
     }
 }
 

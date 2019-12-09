@@ -2,22 +2,21 @@
 ** EPITECH PROJECT, 2019
 ** entitylib
 ** File description:
-** player.c
+** bonus.c
 */
 #include <entity.h>
-#include <player.h>
+#include <data_storage.h>
 
-void update_player(entity_t *self)
+void bonus_entity_update(entity_t *self)
 {
-    if (++(self->timer) > self->frame_delay) {
-        self->timer = 0;
-        self->frame = (self->frame + 1) & 3;
-    }
+    self->pos.v1.x += self->vel.x;
+    self->pos.v1.y += self->vel.y;
+    self->vel.y += self->gravity;
+    self->health--;
 }
 
-player_t *create_player(sfTexture *t, uint_t *size, float fdelay, int hp)
+entity_t *create_bonus_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
 {
-    player_t *player = malloc(sizeof(player_t));
     entity_t *new = malloc(sizeof(entity_t));
 
     if (new == NULL || t == NULL || size == NULL)
@@ -28,9 +27,9 @@ player_t *create_player(sfTexture *t, uint_t *size, float fdelay, int hp)
     create_sprite(new->sprite, t, size);
     new->size = size;
     new->health = hp;
+    new->frame = 0;
     new->frame_delay = fdelay;
-    new->update = update_player;
+    new->update = bonus_entity_update;
     new->custom = no_custom;
-    player->entity = new;
-    return (player);
+    return (new);
 }

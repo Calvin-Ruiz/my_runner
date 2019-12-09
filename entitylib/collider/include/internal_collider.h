@@ -9,7 +9,8 @@
 #define INTERNAL_COLLIDER_H_
 
 #include "entitybase.h"
-#include "collider.h"
+#include "data_storage.h"
+#include "base_collider.h"
 #include "fast_collider.h"
 
 static inline void collide_custom_only(entity_t *entity, entity_t *fired)

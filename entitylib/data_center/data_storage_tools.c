@@ -4,8 +4,8 @@
 ** File description:
 ** data_storage_tools.c
 */
-#include "include/entitylib.h"
-#include "include/converters.h"
+#include <entitylib.h>
+#include <converters.h>
 
 void import_sound(data_storage_t *datas, const char *filename, int i)
 {

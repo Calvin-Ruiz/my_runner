@@ -50,9 +50,8 @@ typedef union int64_raw {
 typedef union data_storage_raw {
     struct {
         int score;
-        int health;
     } data;
-    char raw[8];
+    char raw[4];
 } data_storage_to_raw_t;
 
 typedef union entity_raw {

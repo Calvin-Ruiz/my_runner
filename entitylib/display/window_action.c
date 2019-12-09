@@ -4,11 +4,11 @@
 ** File description:
 ** window_action.c
 */
-#include "include/entitybase.h"
-#include "include/data_storage.h"
-#include "include/internal_data.h"
-#include "include/converters.h"
-#include "include/window_manager.h"
+#include <entitybase.h>
+#include <data_storage.h>
+#include <internal_data.h>
+#include <converters.h>
+#include <window_manager.h>
 
 static void my_save_screenshoot(sfImage *image)
 {

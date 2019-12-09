@@ -4,7 +4,7 @@
 ** File description:
 ** tools.c
 */
-#include "include/entitybase.h"
+#include <entitybase.h>
 
 void apply_all(entitylist_t *self, void (*action)(), void *args)
 {

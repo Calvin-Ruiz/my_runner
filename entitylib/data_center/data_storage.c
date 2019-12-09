@@ -4,8 +4,8 @@
 ** File description:
 ** data_storage.c
 */
-#include "include/entitylib.h"
-#include "include/converters.h"
+#include <entitylib.h>
+#include <converters.h>
 
 data_storage_t *get_data_storage(void)
 {
@@ -49,11 +49,12 @@ data_storage_t *init_data_storage(int nb_sounds, int nb_textures,
 int check_data_storage_content(data_storage_t *datas)
 {
     int check = (!datas->sounds) | (!datas->sound_buffs) | (!datas->textures) |
-        (!datas->entities) | (!datas->entitylists) | ((!datas->window) << 1);
+        (!datas->entities) | (!datas->entitylists) | (!datas->clock) |
+        ((!datas->window) << 1);
     int i = -1;
+
     if (check)
         return (check);
-
     while (++i < datas->nb_sounds)
         check = check | ((datas->sounds[i] == NULL) << 2);
     i = -1;

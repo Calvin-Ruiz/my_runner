@@ -4,9 +4,14 @@
 ** File description:
 ** window_manager.c
 */
-#include "include/entitybase.h"
-#include "include/internal_data.h"
-#include "include/data_storage.h"
+#include <entitybase.h>
+#include <internal_data.h>
+#include <data_storage.h>
+#include <base_collider.h>
+#include <display_thread.h>
+
+void update_window(sfRenderWindow *window, internal_data_t *datas,
+    data_storage_t *stor);
 
 static int create_window_2(internal_data_t *datas, data_storage_t *stor)
 {
@@ -36,13 +41,17 @@ int create_window(sfVideoMode mode, char *name, long int args, int fps)
 {
     data_storage_t *stor = get_data_storage();
     internal_data_t *datas = get_internal_data();
+
+    stor->fps = fps;
+    stor->displayer = sfThread_create(my_displayer, stor);
+    stor->alive = 1;
     stor->window = sfRenderWindow_create(mode, name, args, NULL);
     datas->cursor = sfSprite_create();
     datas->pause = sfSprite_create();
     datas->cursor_skin = sfTexture_createFromFile("textures/cursor.png", NULL);
     datas->pause_skin = sfTexture_createFromFile("textures/pause.png", NULL);
     if (!stor->window || !datas->cursor || !datas->pause || !datas->cursor_skin
-        || !datas->pause_skin)
+        || !datas->pause_skin || !stor->displayer)
         return (84);
     sfRenderWindow_setFramerateLimit(stor->window, fps);
     sfRenderWindow_setMouseCursorVisible(stor->window, sfFalse);

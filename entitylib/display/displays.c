@@ -4,9 +4,9 @@
 ** File description:
 ** displays.c
 */
-#include "include/entitybase.h"
-#include "include/data_storage.h"
-#include "include/internal_data.h"
+#include <entitybase.h>
+#include <data_storage.h>
+#include <internal_data.h>
 
 static void my_write_score(char *str1, char *str2, data_storage_t *datas)
 {
@@ -74,7 +74,7 @@ void display_health_and_score(sfRenderWindow *window, data_storage_t *stor,
     internal_data_t *datas)
 {
     sfVector2f pos;
-    int health = stor->health;
+    int health = stor->player->entity->health;
     char str[] = "Your score : 00000000\n Best score : 00000000";
 
     my_write_score(str + 20, str + 43, stor);

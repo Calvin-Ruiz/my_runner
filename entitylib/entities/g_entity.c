@@ -4,15 +4,14 @@
 ** File description:
 ** g_entity.c
 */
-#include "include/entity.h"
-#include "include/entitylist.h"
-#include "include/data_storage.h"
+#include <entity.h>
+#include <entitylist.h>
+#include <data_storage.h>
 
-void g_entity_update(entity_t *self, float delta_time)
+void g_entity_update(entity_t *self)
 {
-    self->timer += delta_time;
-    if (self->timer > self->frame_delay) {
-        self->timer -= self->frame_delay;
+    if (++(self->timer) > self->frame_delay) {
+        self->timer = 0;
         self->frame = (self->frame + 1) & 3;
     }
 }

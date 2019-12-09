@@ -4,7 +4,7 @@
 ** File description:
 ** entitylist.c
 */
-#include "include/entity.h"
+#include <entity.h>
 
 void entitylist_blits(entitylist_t *self, sfRenderWindow *window)
 {

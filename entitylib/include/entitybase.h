@@ -10,6 +10,7 @@
 
 #include <SFML/Graphics.h>
 #include <SFML/Audio.h>
+#include <SFML/System.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -25,14 +26,15 @@ typedef struct pos {
 typedef struct entity {
     sfSprite **sprite;
     int health;
-    float timer;
+    int timer;
     float frame_delay;
     uchar_t frame_dec;
     uchar_t frame;
     pos_t pos;
     sfVector2f vel;
     uint_t *size;
-    void (*update)(struct entity *self, float delta_time);
+    float gravity;
+    void (*update)();
     void (*custom)(struct entity *self, void *args);
 } entity_t;
 

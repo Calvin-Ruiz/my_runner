@@ -17,11 +17,11 @@ echo -e "
 all :	\$(NAME)
 
 \$(NAME):
-	gcc -o \$(NAME) \$(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio
+	gcc -o \$(NAME) \$(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 
 clean:
 	rm -f *.o
-	rm -f *# *~ ./*/*# ./*/*~ ./*/*/*# ./*/*/*~ 
+	rm -f *# *~ ./*/*# ./*/*~ ./*/*/*# ./*/*/*~
 
 fclean:	clean
 	rm -f \$(NAME)
@@ -46,15 +46,15 @@ sync:	pull	push
 
 debug:
 	clear
-	gcc -o \$(NAME) \$(FILES) -Wall -Wextra -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio
+	gcc -o \$(NAME) \$(FILES) -Wall -Wextra -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 
 valgrind:
-	gcc -g3 -o \$(NAME) \$(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio
+	gcc -g3 -o \$(NAME) \$(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 
 update:
 	./mmkfile.sh $1 $2
 
 \$(LIB).a:
-	gcc -c \$(LIB)/*\.c
+	gcc -c \$(LIB)/*\.c \$(LIB)/*/*\.c
 	ar rc \$(LIB).a *\.o
 	rm -f *\.o" >> "Makefile"

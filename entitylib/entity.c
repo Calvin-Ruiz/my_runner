@@ -4,7 +4,7 @@
 ** File description:
 ** entity.c
 */
-#include "include/entitybase.h"
+#include <entitybase.h>
 
 void no_custom(entity_t *self, void *args)
 {

@@ -21,10 +21,13 @@ typedef struct data_storage {
     int nb_entity;
     int score;
     int higher_score;
-    int health;
     float coef_x;
     float coef_y;
     sfClock *clock;
+    int fps;
+    sfThread *displayer;
+    char alive;
+    player_t *player;
 } data_storage_t;
 
 data_storage_t *get_data_storage(void);

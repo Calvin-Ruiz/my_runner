@@ -42,18 +42,29 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas)
 
 void mainloop(data_storage_t *datas)
 {
-    internal_data_t *internal_datas = get_internal_data();
     sfRenderWindow *window = datas->window;
     while (sfRenderWindow_isOpen(datas->window)) {
-        display_health_and_score(window, datas, internal_datas);
         my_events(window, datas);
-        update_window(window, internal_datas, datas);
     }
+}
+
+static int my_init_entities(data_storage_t *datas)
+{
+    datas->entitylists[0] = create_entitylist(128);
+    datas->entitylists[1] = create_entitylist(32);
+    datas->entitylists[2] = create_entitylist(32);
+    datas->entitylists[3] = create_entitylist(32);
+    datas->entitylists[4] = create_entitylist(16);
+    datas->entitylists[5] = create_entitylist(16);
+    if (!check_data_storage_content(datas))
+        return (0);
+    free_storage_content(datas, 63);
+    return (84);
 }
 
 static int my_init(char **map, param_t *params, int nb_cols, long int len)
 {
-    data_storage_t *datas = init_data_storage(0, 2, 0, 0);
+    data_storage_t *datas = init_data_storage(0, 2, 0, 6);
     if (create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32}, "My Runner",
         sfClose | sfResize, params->fps))
         return (84);
@@ -64,6 +75,12 @@ static int my_init(char **map, param_t *params, int nb_cols, long int len)
             free_storage_content(datas, 11);
         return (84);
     }
+    if (my_init_entities(datas))
+        return (84);
+    int sizes[6] = {1, 1, 1, 1, 1, 1};
+    int pos[6] = {0, 1, 2, 3, 4, 5};
+    if (init_collider(pos, sizes, datas))
+        return (84);
     return (my_init_uninit(map, params, nb_cols, len));
 }
 

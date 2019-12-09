@@ -4,8 +4,8 @@
 ** File description:
 ** internal_data.c
 */
-#include "include/entitybase.h"
-#include "include/internal_data.h"
+#include <entitybase.h>
+#include <internal_data.h>
 
 internal_data_t *get_internal_data(void)
 {

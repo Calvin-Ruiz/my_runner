@@ -2,22 +2,18 @@
 ** EPITECH PROJECT, 2019
 ** entitylib
 ** File description:
-** bonus.c
+** score.c
 */
-#include "include/entity.h"
-#include "include/data_storage.h"
+#include <entity.h>
+#include <data_storage.h>
 
-void bonus_entity_update(entity_t *self, float delta_time)
+void score_entity_update(entity_t *self)
 {
-    self->timer += delta_time;
-    self->pos.v1.x += self->vel.x * delta_time;
-    self->pos.v1.y = self->pos.v2.y + self->timer * (self->vel.y +
-        200.f * self->timer);
-    if (self->pos.v1.y > 800)
-        self->health = 0;
+    self->pos.v1.y += self->vel.y;
+    self->health--;
 }
 
-entity_t *create_bonus_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
+entity_t *create_score_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
 {
     entity_t *new = malloc(sizeof(entity_t));
 
@@ -31,7 +27,7 @@ entity_t *create_bonus_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
     new->health = hp;
     new->frame = 0;
     new->frame_delay = fdelay;
-    new->update = bonus_entity_update;
+    new->update = score_entity_update;
     new->custom = no_custom;
     return (new);
 }

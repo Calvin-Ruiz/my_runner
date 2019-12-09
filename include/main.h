@@ -52,7 +52,7 @@ static inline int apply_parameter(int i, char **args, param_t *parameters)
     return (i);
 }
 
-static inline void load_line (char **map, int col, int nb_cols,
+static inline void load_line(char **map, int col, int nb_cols,
     data_storage_t *datas)
 {
     const char col_len = (*map)[-1];
@@ -74,6 +74,7 @@ static inline void load_line (char **map, int col, int nb_cols,
 static inline int my_init_uninit(char **map, param_t *params, int nb_cols, long int len)
 {
     data_storage_t *datas = get_data_storage();
+
     if (init_heart_and_score(datas->textures[1], datas->textures[0]))
         return (84);
     mainloop(datas);
