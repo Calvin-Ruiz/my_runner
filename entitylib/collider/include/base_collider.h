@@ -31,7 +31,7 @@ typedef struct collider_data {
 } collider_t;
 
 collider_t *get_collider_data(void);
-int init_collider(int *pos, int *sizes, data_storage_t *datas);
+int init_collider(int *pos, int *sizes, data_storage_t *datas, long long fps);
 void destroy_collider(void);
 
 #endif /* BASE_COLLIDER_H_ */

@@ -24,7 +24,7 @@ clean:
 	rm -f *# *~ ./*/*# ./*/*~ ./*/*/*# ./*/*/*~
 
 fclean:	clean
-	rm -f \$(NAME)
+	rm -f \$(NAME) vgcore*
 
 re:	fclean all
 

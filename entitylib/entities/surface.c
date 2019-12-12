@@ -8,10 +8,6 @@
 
 void surface_update(entity_t *self)
 {
-    self->pos.v1.x -= self->vel.x;
-    self->pos.v2.x = self->pos.v1.x + *(self->size);
-    if (self->pos.v2.x < 0)
-        self->health = 0;
 }
 
 entity_t *create_surface(sfTexture *t, uint_t *size, float fdelay,

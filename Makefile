@@ -31,6 +31,7 @@ FILES = entitylib/collider/collider.c \
 	entitylib/tools.c \
 	load_map.c \
 	main.c \
+	mainloop.c \
 	my_read.c
 
 all :	$(NAME)
@@ -43,7 +44,7 @@ clean:
 	rm -f *# *~ ./*/*# ./*/*~ ./*/*/*# ./*/*/*~
 
 fclean:	clean
-	rm -f $(NAME)
+	rm -f $(NAME) vgcore*
 
 re:	fclean all
 

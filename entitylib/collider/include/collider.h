@@ -76,6 +76,26 @@ static inline void collide_fired(collider_t *data)
     }
 }
 
+static inline void collide_mob(collider_t *data)
+{
+    int i = -1;
+    int j = -1;
+    entity_t *entity;
+
+    while (++i < data->nb_mob) {
+        j = -1;
+        while (++j < data->mob[i]->len) {
+            entity = data->mob[i]->list[j];
+            check_update(entity);
+            collwith_solid_static(entity, data);
+            collwith_solid_dynamic(entity, data);
+            collwith_fired(entity, data);
+            collwith_mob(entity, data);
+            collwith_player(entity, data);
+        }
+    }
+}
+
 #include "player_collider.h"
 
 #endif /* COLLIDER_H_ */

@@ -20,10 +20,11 @@ static inline void fast_collide(entity_t *entity, entity_t *solid)
         entity->pos.v1.x = solid->pos.v2.x;
     else
         entity->pos.v1.x = solid->pos.v1.x - *(entity->size);
-    if (entity->vel.y < 0)
+    if (entity->vel.y < 0) {
         entity->pos.v1.y = solid->pos.v2.y;
-    else
+    } else {
         entity->pos.v1.y = solid->pos.v1.y - entity->size[1];
+    }
 }
 
 static inline void fast_collide_with_custom(entity_t *entity, entity_t *solid)

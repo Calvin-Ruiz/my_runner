@@ -26,40 +26,7 @@ static void my_help(int n, char **args)
     free(str);
 }
 
-static void my_events(sfRenderWindow *window, data_storage_t *datas)
-{
-    sfEvent event;
-    sfTime test = {50000};
-
-    sfMutex_lock(datas->my_lock);
-    while (sfRenderWindow_pollEvent(window, &event)) {
-        if (event.type == sfEvtClosed) {
-            sfMutex_unlock(datas->my_lock);
-            datas->alive = 0;
-            sfThread_destroy(datas->displayer);
-            sfRenderWindow_close(window);
-        }
-        if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
-            my_pause_game(window, datas);
-        if (event.type == sfEvtKeyPressed && event.key.code == sfKeyF12)
-            my_take_screenshoot(window, datas);
-    }
-    sfMutex_unlock(datas->my_lock);
-    sfSleep(test);
-}
-
-void mainloop(data_storage_t *datas, char **map, const int nb_cols)
-{
-    sfRenderWindow *window = datas->window;
-    int col = -1;
-    while (++col < 21)
-        load_line(map, col, nb_cols, datas);
-    while (sfRenderWindow_isOpen(datas->window)) {
-        my_events(window, datas);
-    }
-}
-
-static inline void my_init_textures(data_storage_t *datas)
+static void my_init_textures(data_storage_t *datas)
 {
     datas->textures[0] = sfTexture_createFromFile("textures/end.png", NULL);
     datas->textures[1] = sfTexture_createFromFile("textures/heart.png", NULL);
@@ -67,7 +34,7 @@ static inline void my_init_textures(data_storage_t *datas)
     datas->textures[3] = sfTexture_createFromFile("textures/ground.png", NULL);
 }
 
-static inline int my_init_entities(data_storage_t *datas)
+static int my_init_entities(data_storage_t *datas)
 {
     datas->entitylists[0] = create_entitylist(128);
     datas->entitylists[1] = create_entitylist(32);
@@ -100,6 +67,7 @@ static int my_init(char **map, param_t *params, int nb_cols, long int len)
     if (my_init_entities(datas))
         return (84);
     datas->player = create_player((*map)[-1]);
+    datas->player->entity->vel.x = 12.8f;
     return (my_init_uninit(map, params, nb_cols, len));
 }
 

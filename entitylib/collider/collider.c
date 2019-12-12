@@ -19,9 +19,10 @@ static void collide_and_update_all(void *ptr)
     collider_t *data = ptr;
     const long long frame_delay = data->frame_delay;
     sfClock *clock = data->data_clock;
-    long long actual;
+    long long *actual = &(get_data_storage()->last_update);
     long long target = sfClock_getElapsedTime(clock).microseconds;
     long int nb_loops = 0;
+
     while (data->alive) {
         target += frame_delay;
         collide_solid_static(data);
@@ -29,17 +30,18 @@ static void collide_and_update_all(void *ptr)
         collide_fired(data);
         collide_mob(data);
         collide_player(data);
-        actual = sfClock_getElapsedTime(clock).microseconds;
-        if (target > actual)
-            sfSleep((sfTime) {target - actual});
+        *actual = sfClock_getElapsedTime(clock).microseconds;
+        if (target > *actual)
+            sfSleep((sfTime) {target - *actual});
         nb_loops++;
     }
-    data->time_lost_per_frame = (actual - target) / nb_loops;
+    data->time_lost_per_frame = (*actual - target) / nb_loops;
 }
 
 static void init_collider_datas(int *pos, data_storage_t *datas,
-    collider_t *data)
+    collider_t *data, long long fps)
 {
+    data->frame_delay = 1000000 / fps;
     if (data->nb_solid_static)
         *data->solid_static = datas->entitylists[pos[0]];
     if (data->nb_solid_dynamic)
@@ -54,12 +56,12 @@ static void init_collider_datas(int *pos, data_storage_t *datas,
         *data->mob = datas->entitylists[pos[5]];
     data->player = datas->player->entity;
     data->data_clock = datas->clock;
-    data->my_scroll.x = -32.f;
+    data->my_scroll.x = -256.f;
     data->my_scroll.y = 0.f;
     datas->my_lock = sfMutex_create();
 }
 
-int init_collider(int *pos, int *sizes, data_storage_t *datas)
+int init_collider(int *pos, int *sizes, data_storage_t *datas, long long fps)
 {
     collider_t *data = get_collider_data();
     data->nb_solid_static = sizes[0];
@@ -74,7 +76,7 @@ int init_collider(int *pos, int *sizes, data_storage_t *datas)
     data->fired = malloc(sizeof(void *) * data->nb_fired);
     data->nb_mob = sizes[5];
     data->mob = malloc(sizeof(void *) * data->nb_mob);
-    init_collider_datas(pos, datas, data);
+    init_collider_datas(pos, datas, data, fps);
     data->alive = 1;
     data->updater = sfThread_create(collide_and_update_all, data);
     if (data->updater == NULL)
