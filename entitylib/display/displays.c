@@ -43,7 +43,9 @@ void my_game_over(sfRenderWindow *window, internal_data_t *datas,
         sfText_setPosition(datas->score_text, pos);
     }
     sfRenderWindow_display(window);
-    while (sfClock_getElapsedTime(my_clock).microseconds < 2500000);
+    long long actual_time = sfClock_getElapsedTime(my_clock).microseconds;
+    if (actual_time < 2500000)
+        sfSleep((sfTime) {2500000 - actual_time});
     sfClock_destroy(my_clock);
 }
 

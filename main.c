@@ -29,26 +29,45 @@ static void my_help(int n, char **args)
 static void my_events(sfRenderWindow *window, data_storage_t *datas)
 {
     sfEvent event;
+    sfTime test = {50000};
 
+    sfMutex_lock(datas->my_lock);
     while (sfRenderWindow_pollEvent(window, &event)) {
-        if (event.type == sfEvtClosed)
+        if (event.type == sfEvtClosed) {
+            sfMutex_unlock(datas->my_lock);
+            datas->alive = 0;
+            sfThread_destroy(datas->displayer);
             sfRenderWindow_close(window);
+        }
         if (event.type == sfEvtKeyPressed && event.key.code == sfKeyEscape)
             my_pause_game(window, datas);
         if (event.type == sfEvtKeyPressed && event.key.code == sfKeyF12)
             my_take_screenshoot(window, datas);
     }
+    sfMutex_unlock(datas->my_lock);
+    sfSleep(test);
 }
 
-void mainloop(data_storage_t *datas)
+void mainloop(data_storage_t *datas, char **map, const int nb_cols)
 {
     sfRenderWindow *window = datas->window;
+    int col = -1;
+    while (++col < 21)
+        load_line(map, col, nb_cols, datas);
     while (sfRenderWindow_isOpen(datas->window)) {
         my_events(window, datas);
     }
 }
 
-static int my_init_entities(data_storage_t *datas)
+static inline void my_init_textures(data_storage_t *datas)
+{
+    datas->textures[0] = sfTexture_createFromFile("textures/end.png", NULL);
+    datas->textures[1] = sfTexture_createFromFile("textures/heart.png", NULL);
+    datas->textures[2] = sfTexture_createFromFile("textures/player.png", NULL);
+    datas->textures[3] = sfTexture_createFromFile("textures/ground.png", NULL);
+}
+
+static inline int my_init_entities(data_storage_t *datas)
 {
     datas->entitylists[0] = create_entitylist(128);
     datas->entitylists[1] = create_entitylist(32);
@@ -56,6 +75,10 @@ static int my_init_entities(data_storage_t *datas)
     datas->entitylists[3] = create_entitylist(32);
     datas->entitylists[4] = create_entitylist(16);
     datas->entitylists[5] = create_entitylist(16);
+    datas->entities[0] = create_player_entity(datas->textures[2],
+        get_size(64, 128, 3), 0.15f, 10);
+    datas->entities[1] = create_surface(datas->textures[3], get_size(64, 64, 1),
+        2.f, no_custom);
     if (!check_data_storage_content(datas))
         return (0);
     free_storage_content(datas, 63);
@@ -64,12 +87,11 @@ static int my_init_entities(data_storage_t *datas)
 
 static int my_init(char **map, param_t *params, int nb_cols, long int len)
 {
-    data_storage_t *datas = init_data_storage(0, 2, 0, 6);
+    data_storage_t *datas = init_data_storage(0, 4, 2, 6);
     if (create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32}, "My Runner",
         sfClose | sfResize, params->fps))
         return (84);
-    datas->textures[0] = sfTexture_createFromFile("textures/end.png", NULL);
-    datas->textures[1] = sfTexture_createFromFile("textures/heart.png", NULL);
+    my_init_textures(datas);
     if (check_data_storage_content(datas) & 11) {
         if ((check_data_storage_content(datas) & 1) == 0)
             free_storage_content(datas, 11);
@@ -77,10 +99,7 @@ static int my_init(char **map, param_t *params, int nb_cols, long int len)
     }
     if (my_init_entities(datas))
         return (84);
-    int sizes[6] = {1, 1, 1, 1, 1, 1};
-    int pos[6] = {0, 1, 2, 3, 4, 5};
-    if (init_collider(pos, sizes, datas))
-        return (84);
+    datas->player = create_player((*map)[-1]);
     return (my_init_uninit(map, params, nb_cols, len));
 }
 

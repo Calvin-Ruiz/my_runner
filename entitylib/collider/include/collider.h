@@ -24,7 +24,7 @@ static inline void check_update(entity_t *entity)
         entity->update(entity);
 }
 
-static  void collide_solid_static(collider_t *data)
+static inline void collide_solid_static(collider_t *data)
 {
     int i = -1;
     int j = -1;
@@ -41,7 +41,7 @@ static  void collide_solid_static(collider_t *data)
     }
 }
 
-static  void collide_solid_dynamic(collider_t *data)
+static inline void collide_solid_dynamic(collider_t *data)
 {
     int i = -1;
     int j = -1;
@@ -59,7 +59,7 @@ static  void collide_solid_dynamic(collider_t *data)
     }
 }
 
-static  void collide_fired(collider_t *data)
+static inline void collide_fired(collider_t *data)
 {
     int i = -1;
     int j = -1;

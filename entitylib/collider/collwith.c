@@ -16,7 +16,7 @@ void collwith_solid_static(entity_t *entity, collider_t *data)
     while (++i < data->nb_solid_static) {
         j = -1;
         while (++j < data->solid_static[i]->len)
-            fast_collide(entity, data->solid_static[i]->list[j]);
+        fast_collide(entity, data->solid_static[i]->list[j]);
     }
 }
 

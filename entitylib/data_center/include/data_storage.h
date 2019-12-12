@@ -28,6 +28,8 @@ typedef struct data_storage {
     sfThread *displayer;
     char alive;
     player_t *player;
+    sfMutex *my_lock;
+    long long tref;
 } data_storage_t;
 
 data_storage_t *get_data_storage(void);

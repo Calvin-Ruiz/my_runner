@@ -10,10 +10,6 @@
 
 void g_entity_update(entity_t *self)
 {
-    if (++(self->timer) > self->frame_delay) {
-        self->timer = 0;
-        self->frame = (self->frame + 1) & 3;
-    }
 }
 
 entity_t *create_g_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
@@ -28,7 +24,7 @@ entity_t *create_g_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
     create_sprite(new->sprite, t, size);
     new->size = size;
     new->health = hp;
-    new->frame_delay = fdelay;
+    new->frame_delay = fdelay * 1000000;
     new->update = g_entity_update;
     new->custom = no_custom;
     return (new);

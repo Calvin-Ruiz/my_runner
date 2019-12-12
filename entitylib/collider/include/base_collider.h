@@ -30,12 +30,8 @@ typedef struct collider_data {
     long long time_lost_per_frame;
 } collider_t;
 
-static inline collider_t *get_collider_data(void)
-{
-    static collider_t data[1];
-    return (data);
-}
-
+collider_t *get_collider_data(void);
 int init_collider(int *pos, int *sizes, data_storage_t *datas);
+void destroy_collider(void);
 
 #endif /* BASE_COLLIDER_H_ */

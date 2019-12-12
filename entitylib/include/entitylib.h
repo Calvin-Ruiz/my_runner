@@ -14,6 +14,7 @@
 #include "internal_data.h"
 #include "window_manager.h"
 #include "base_collider.h"
+#include "entity_types.h"
 
 void apply_all(entitylist_t *self, void (*action)(), void *arg);
 void apply_all_custom(entitylist_t *self, void *args);

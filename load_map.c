@@ -16,12 +16,13 @@ char **load_map(const char *filename, long int *len, int *nb_cols)
     char *map = my_read(fd, len);
     if (map == NULL)
         return (NULL);
-    *nb_cols = *len / *(map++);
+    const char nb_lines = *(map++);
+    *nb_cols = *len / nb_lines;
     char **map_2d = malloc(sizeof(void *) * (*nb_cols));
     int i = -1;
     while (++i < *nb_cols) {
         map_2d[i] = map;
-        map += *nb_cols;
+        map += nb_lines;
     }
     return (map_2d);
 }

@@ -60,11 +60,11 @@ typedef union entity_raw {
         int health;
         unsigned char frame;
         unsigned char frame_dec;
-        float frame_delay;
+        long long frame_delay;
         sfVector2f vel;
         pos_t pos;
     } data;
-    char raw[8 + sizeof(float) + sizeof(sfVector2f) + sizeof(pos_t)];
+    char raw[8 + sizeof(long long) + sizeof(sfVector2f) + sizeof(pos_t)];
 } entity_to_raw_t;
 
 #endif /* CONVERTERS_H_ */

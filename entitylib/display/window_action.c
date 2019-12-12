@@ -36,6 +36,7 @@ static void my_save_screenshoot(sfImage *image)
 
 void my_take_screenshoot(sfRenderWindow *window, data_storage_t *datas)
 {
+    sfClock *my_clock = sfClock_create();
     sfVector2u size = sfRenderWindow_getSize(window);
     sfTexture *texture = sfTexture_create(size.x, size.y);
 
@@ -51,10 +52,8 @@ void my_take_screenshoot(sfRenderWindow *window, data_storage_t *datas)
     my_save_screenshoot(image);
     sfTexture_destroy(texture);
     sfImage_destroy(image);
-    int i = -1;
-    while (++i < datas->nb_entitylist)
-        datas->entitylists[i]->last = sfClock_getElapsedTime(
-            datas->entitylists[i]->clock).microseconds;
+    datas->tref += sfClock_getElapsedTime(my_clock).microseconds;
+    sfClock_destroy(my_clock);
 }
 
 static void my_pause_loop(sfRenderWindow *window, data_storage_t *datas)
@@ -75,6 +74,7 @@ static void my_pause_loop(sfRenderWindow *window, data_storage_t *datas)
 
 void my_pause_game(sfRenderWindow *window, data_storage_t *stor)
 {
+    sfClock *my_clock = sfClock_create();
     internal_data_t *datas = get_internal_data();
 
     sfRenderWindow_drawSprite(window, datas->pause, NULL);
@@ -84,10 +84,8 @@ void my_pause_game(sfRenderWindow *window, data_storage_t *stor)
     my_pause_loop(window, stor);
     sfRenderWindow_setMouseCursorVisible(window, sfFalse);
     sfRenderWindow_setMouseCursorGrabbed(window, sfTrue);
-    int i = -1;
-    while (++i < stor->nb_entitylist)
-        stor->entitylists[i]->last = sfClock_getElapsedTime(
-            stor->entitylists[i]->clock).microseconds;
+    stor->tref += sfClock_getElapsedTime(my_clock).microseconds;
+    sfClock_destroy(my_clock);
 }
 
 void check_window_size(sfRenderWindow *window, data_storage_t *datas)

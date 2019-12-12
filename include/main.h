@@ -10,7 +10,8 @@
 
 #include "my_getnbr.h"
 #include "my_read.h"
-#include "../entitylib/include/entitylib.h"
+#include <entitylib.h>
+#include <player.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -26,7 +27,7 @@ typedef struct param {
 } param_t;
 
 char **load_map(const char *filename, long int *len, int *nb_cols);
-void mainloop(data_storage_t *datas);
+void mainloop(data_storage_t *datas, char **map, const int nb_cols);
 
 static inline int apply_parameter(int i, char **args, param_t *parameters)
 {
@@ -52,7 +53,7 @@ static inline int apply_parameter(int i, char **args, param_t *parameters)
     return (i);
 }
 
-static inline void load_line(char **map, int col, int nb_cols,
+static inline void load_line(char **map, int col, const int nb_cols,
     data_storage_t *datas)
 {
     const char col_len = (*map)[-1];
@@ -61,8 +62,8 @@ static inline void load_line(char **map, int col, int nb_cols,
     if (col >= nb_cols)
         return;
     while (++i < col_len) {
-        if (!map[col][i]) {
-            pos_t pos = {(sfVector2f) {1280.f, i * 64.f},
+        if (map[col][i]) {
+            pos_t pos = {(sfVector2f) {col * 64, i * 64},
                 (sfVector2f) {0.f, 0.f}};
             entity_t *entity = new_instance(datas->entities[map[col][i] & 63],
                 pos, (sfVector2f) {-0.1f, 0.f}, 0);
@@ -71,13 +72,20 @@ static inline void load_line(char **map, int col, int nb_cols,
     }
 }
 
-static inline int my_init_uninit(char **map, param_t *params, int nb_cols, long int len)
+static inline int my_init_uninit(char **map, param_t *params, int nb_cols,
+    long int len)
 {
     data_storage_t *datas = get_data_storage();
 
     if (init_heart_and_score(datas->textures[1], datas->textures[0]))
         return (84);
-    mainloop(datas);
+    int sizes[6] = {1, 1, 1, 1, 1, 1};
+    int pos[6] = {0, 1, 2, 3, 4, 5};
+    if (init_collider(pos, sizes, datas))
+        return (84);
+    sfThread_launch(datas->displayer);
+    mainloop(datas, map, nb_cols);
+    destroy_collider();
     free_storage_content(datas, 63);
     destroy_heart_and_score();
     free(*map - 1);

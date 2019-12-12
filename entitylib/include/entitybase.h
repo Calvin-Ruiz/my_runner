@@ -26,8 +26,8 @@ typedef struct pos {
 typedef struct entity {
     sfSprite **sprite;
     int health;
-    int timer;
-    float frame_delay;
+    long long timer;
+    long long frame_delay;
     uchar_t frame_dec;
     uchar_t frame;
     pos_t pos;

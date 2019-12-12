@@ -1,1 +1,3 @@
-To create or edit map, use ./my_runner -e map_name
+To edit a map, use ./my_runner -e map_name
+To create a new map, use ./my_runner -n nb_lines map_name
+Replace map_name by the name of the map, and nb_lines by the number of lines in the level.

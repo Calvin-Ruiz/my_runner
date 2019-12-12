@@ -23,6 +23,3 @@ USER INTERACTIONS
   MOUSE_ROLL	change selected bloc (editor only)
   KEY_LEFT	left move (editor only)
   KEY_RIGHT	right move (editor only)
-
-CREATE BLOC
-  ./new_bloc bloc_id (deprecated)

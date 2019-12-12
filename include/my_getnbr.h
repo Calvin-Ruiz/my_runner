@@ -53,7 +53,7 @@ static inline int my_getnbr(char const *str)
         }
         i++;
     }
-    value = (is_neg) ? value | (1 << 31) : (-value) & 2147483647;
+    value = (is_neg) ? value : value;
     return (value);
 }
 
