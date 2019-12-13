@@ -74,8 +74,10 @@ static int my_init(char **map, param_t *params, int nb_cols, long int len)
 int main(int nargs, char **args)
 {
     int i = 0;
-    param_t params[1];
-    *params = (param_t) {60, '\0' + 1, '\0', '\0', 0, '\0', 0};
+    param_t params[1] = {(param_t) {60, '\0' + 1, '\0', '\0', 0, '\0', 0}};
+    long int len = 0;
+    int nb_cols = 0;
+
     my_help(nargs, args);
     while (++i < nargs) {
         if (args[i][0] == '-')
@@ -85,11 +87,8 @@ int main(int nargs, char **args)
     }
     params->editor = params->editor | params->nb_lines;
     params->menu = params->menu | !(params->practice | params->editor);
-    long int len = 0;
-    int nb_cols = 0;
     char **map = load_map(params->name, &len, &nb_cols);
     if (map == NULL)
         return (84);
-    int exit_mode = my_init(map, params, nb_cols, len);
-    return (exit_mode);
+    return (my_init(map, params, nb_cols, len));
 }

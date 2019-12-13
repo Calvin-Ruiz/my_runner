@@ -53,6 +53,7 @@ void my_take_screenshoot(sfRenderWindow *window, data_storage_t *datas)
     sfTexture_destroy(texture);
     sfImage_destroy(image);
     datas->tref += sfClock_getElapsedTime(my_clock).microseconds;
+    datas->coll_target += sfClock_getElapsedTime(my_clock).microseconds;
     sfClock_destroy(my_clock);
 }
 

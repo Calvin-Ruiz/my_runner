@@ -32,6 +32,7 @@ typedef struct data_storage {
     long long tref;
     long long last_refresh;
     long long last_update;
+    long long coll_target;
 } data_storage_t;
 
 data_storage_t *get_data_storage(void);

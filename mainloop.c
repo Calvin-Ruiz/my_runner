@@ -34,7 +34,8 @@ void mainloop(data_storage_t *datas, char **map, const int nb_cols)
 {
     sfRenderWindow *window = datas->window;
     int col = -1;
-    while (++col < 21)
+
+    while (++col < 30)
         load_line(map, col, nb_cols, datas);
     while (sfRenderWindow_isOpen(datas->window)) {
         my_events(window, datas);

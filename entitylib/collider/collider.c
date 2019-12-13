@@ -14,28 +14,28 @@ collider_t *get_collider_data(void)
     return (data);
 }
 
-static void collide_and_update_all(void *ptr)
+static void collide_and_update_all(collider_t *data)
 {
-    collider_t *data = ptr;
     const long long frame_delay = data->frame_delay;
     sfClock *clock = data->data_clock;
     long long *actual = &(get_data_storage()->last_update);
-    long long target = sfClock_getElapsedTime(clock).microseconds;
+    long long *target = &(get_data_storage()->coll_target);
     long int nb_loops = 0;
 
+    *target = sfClock_getElapsedTime(clock).microseconds;
     while (data->alive) {
-        target += frame_delay;
+        *target += frame_delay;
         collide_solid_static(data);
         collide_solid_dynamic(data);
         collide_fired(data);
         collide_mob(data);
         collide_player(data);
         *actual = sfClock_getElapsedTime(clock).microseconds;
-        if (target > *actual)
-            sfSleep((sfTime) {target - *actual});
+        if (*target > *actual)
+            sfSleep((sfTime) {*target - *actual});
         nb_loops++;
     }
-    data->time_lost_per_frame = (*actual - target) / nb_loops;
+    data->time_lost_per_frame = (*actual - *target) / nb_loops;
 }
 
 static void init_collider_datas(int *pos, data_storage_t *datas,
@@ -78,7 +78,7 @@ int init_collider(int *pos, int *sizes, data_storage_t *datas, long long fps)
     data->mob = malloc(sizeof(void *) * data->nb_mob);
     init_collider_datas(pos, datas, data, fps);
     data->alive = 1;
-    data->updater = sfThread_create(collide_and_update_all, data);
+    data->updater = sfThread_create((void (*)(void *)) collide_and_update_all, data);
     if (data->updater == NULL)
         return (84);
     sfThread_launch(data->updater);
