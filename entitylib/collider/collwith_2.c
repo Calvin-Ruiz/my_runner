@@ -26,3 +26,10 @@ void collwith_player(entity_t *entity, collider_t *data)
         return;
     collide_with_custom(data->player, entity);
 }
+
+void static_collwith_player(entity_t *entity, collider_t *data)
+{
+    if (entity == NULL)
+        return;
+    static_collide_with_custom(data->player, entity);
+}

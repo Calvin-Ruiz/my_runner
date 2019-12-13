@@ -17,6 +17,7 @@ void collwith_hollow_dynamic(entity_t *entity, collider_t *data);
 void collwith_fired(entity_t *entity, collider_t *data);
 void collwith_mob(entity_t *entity, collider_t *data);
 void collwith_player(entity_t *entity, collider_t *player);
+void static_collwith_player(entity_t *entity, collider_t *data);
 
 static inline void check_update(entity_t *entity)
 {
@@ -36,7 +37,7 @@ static inline void collide_solid_static(collider_t *data)
             entity = data->solid_static[i]->list[j];
             check_update(entity);
             collwith_fired(entity, data);
-            collwith_player(entity, data);
+            static_collwith_player(entity, data);
         }
     }
 }
@@ -71,7 +72,6 @@ static inline void collide_fired(collider_t *data)
             entity = data->fired[i]->list[j];
             check_update(entity);
             collwith_fired(entity, data);
-            collwith_player(entity, data);
         }
     }
 }

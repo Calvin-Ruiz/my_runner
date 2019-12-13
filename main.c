@@ -67,7 +67,7 @@ static int my_init(char **map, param_t *params, int nb_cols, long int len)
     if (my_init_entities(datas))
         return (84);
     datas->player = create_player((*map)[-1]);
-    datas->player->entity->vel.x = 12.8f;
+    datas->player->entity->vel.x = 25.6f;
     return (my_init_uninit(map, params, nb_cols, len));
 }
 

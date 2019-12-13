@@ -56,7 +56,7 @@ static void init_collider_datas(int *pos, data_storage_t *datas,
         *data->mob = datas->entitylists[pos[5]];
     data->player = datas->player->entity;
     data->data_clock = datas->clock;
-    data->my_scroll.x = -256.f;
+    data->my_scroll.x = -512.f;
     data->my_scroll.y = 0.f;
     datas->my_lock = sfMutex_create();
 }

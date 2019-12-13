@@ -10,7 +10,7 @@
 
 void update_player(entity_t *self)
 {
-    self->vel.y += 0.5f;
+    self->vel.y += 4.f;
     self->pos.v1.x += self->vel.x;
     self->pos.v1.y += self->vel.y;
     self->pos.v2.x = self->pos.v1.x + self->size[0];

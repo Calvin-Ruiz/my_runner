@@ -37,20 +37,20 @@ static inline void event_press(sfRenderWindow *window, data_storage_t *datas,
     if (event.key.code == sfKeyF12)
         my_take_screenshoot(window, datas);
     if (event.key.code == sfKeyLeft)
-        datas->player->entity->vel.x = 6.4f;
+        datas->player->entity->vel.x = 12.8f;
     if (event.key.code == sfKeyRight)
-        datas->player->entity->vel.x = 19.2f;
+        datas->player->entity->vel.x = 38.4f;
     if (event.key.code == sfKeySpace && (datas->player->entity->vel.y == 0.f
-        || datas->player->entity->vel.y == 0.5f))
-        datas->player->entity->vel.y = -12.8f;
+        || datas->player->entity->vel.y == 4.f))
+        datas->player->entity->vel.y = -38.4f;
 }
 
 static inline void event_release(entity_t *entity, sfEvent event)
 {
-    if (event.key.code == sfKeyLeft && entity->vel.x == 6.4f)
-        entity->vel.x = 12.8f;
-    if (event.key.code == sfKeyRight && entity->vel.x == 19.2f)
-        entity->vel.x = 12.8f;
+    if (event.key.code == sfKeyLeft && entity->vel.x == 12.8f)
+        entity->vel.x = 25.6f;
+    if (event.key.code == sfKeyRight && entity->vel.x == 38.4f)
+        entity->vel.x = 25.6f;
 }
 
 #endif /* MAINLOOP_H_ */
