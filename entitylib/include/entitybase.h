@@ -35,7 +35,9 @@ typedef struct entity {
     uint_t *size;
     float gravity;
     void (*update)();
-    void (*custom)(struct entity *self, void *args);
+    void (*custom)(struct entity *self, struct entity *target);
+    void (*custom_x)(struct entity *self, struct entity *target);
+    void (*custom_y)(struct entity *self, struct entity *target);
 } entity_t;
 
 typedef struct entitylist {

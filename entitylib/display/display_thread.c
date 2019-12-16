@@ -21,12 +21,12 @@ static inline void blit_entitylist(data_storage_t *data, entitylist_t *self,
         if (entity != NULL) {
             pos = entity->pos.v1;
             pos.x += dec + entity->vel.x * time_dec;
-            pos.y += (entity->vel.y == 4.f) ? 0 : entity->vel.y * time_dec;
+            pos.y += ((entity->vel.y == entity->gravity) ?
+                0 : entity->vel.y * time_dec);
             entity->timer += delta_time;
             entity->frame = (entity->timer / entity->frame_delay) & 3;
             sfSprite_setPosition(entity->sprite[entity->frame], pos);
-            sfRenderWindow_drawSprite(window, entity->sprite[entity->frame],
-                NULL);
+            sfRenderWindow_drawSprite(window, entity->sprite[entity->frame], 0);
         }
     }
 }
@@ -39,7 +39,7 @@ static void blit_player(data_storage_t *data, entity_t *player,
     sfVector2f pos = player->pos.v1;
 
     pos.x += dec + player->vel.x * time_dec;
-    if (player->vel.y != 4.f)
+    if (player->vel.y != player->gravity)
         pos.y += player->vel.y * time_dec;
     player->timer += delta_time;
     player->frame = (player->timer / player->frame_delay) & 3;
@@ -52,6 +52,7 @@ static void blit_all_with_dec(data_storage_t *data, collider_t *datas,
     const float dec, long long delta_time)
 {
     short i = -1;
+
     while (++i < datas->nb_mob)
         blit_entitylist(data, datas->mob[i], dec, delta_time);
     blit_player(data, datas->player, dec, delta_time);
@@ -75,14 +76,14 @@ static void blit_all_with_dec(data_storage_t *data, collider_t *datas,
 void my_displayer(data_storage_t *datas)
 {
     internal_data_t *internal_datas = get_internal_data();
-    sfRenderWindow *window = datas->window;
     collider_t *coll = get_collider_data();
-    sfClock *clock = datas->clock;
     const long long delay = 1000000 / datas->fps;
     const float scroll = coll->my_scroll.x / 1000000;
-    datas->tref = sfClock_getElapsedTime(clock).microseconds;
-    long long target = datas->tref;
+    sfRenderWindow *window = datas->window;
+    long long target = sfClock_getElapsedTime(datas->clock).microseconds;
     long long *actual = &(datas->last_refresh);
+
+    datas->tref = target;
     while (datas->alive) {
         blit_all_with_dec(datas, coll, scroll * (target - datas->tref), delay);
         target += delay;
@@ -90,7 +91,7 @@ void my_displayer(data_storage_t *datas)
         sfMutex_lock(datas->my_lock);
         update_window(window, internal_datas, datas);
         sfMutex_unlock(datas->my_lock);
-        *actual = sfClock_getElapsedTime(clock).microseconds;
+        *actual = sfClock_getElapsedTime(datas->clock).microseconds;
         if (target > *actual)
             sfSleep((sfTime) {target - *actual});
     }

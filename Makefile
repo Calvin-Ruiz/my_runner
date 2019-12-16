@@ -9,7 +9,8 @@ NAME = my_runner
 
 LIB = entitylib
 
-FILES = entitylib/collider/collider.c \
+FILES = blocs.c \
+	entitylib/collider/collider.c \
 	entitylib/collider/collwith_2.c \
 	entitylib/collider/collwith.c \
 	entitylib/data_center/data_loader.c \
@@ -22,6 +23,7 @@ FILES = entitylib/collider/collider.c \
 	entitylib/display/window_action.c \
 	entitylib/display/window_manager.c \
 	entitylib/entities/bonus.c \
+	entitylib/entities/fired.c \
 	entitylib/entities/g_entity.c \
 	entitylib/entities/score.c \
 	entitylib/entities/surface.c \

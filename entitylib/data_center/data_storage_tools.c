@@ -51,8 +51,11 @@ static void free_groups(data_storage_t *datas)
     free(datas->textures);
     free(datas->entities);
     free(datas->entitylists);
-    free(datas->player->entity);
-    free(datas->player);
+    if (datas->player != NULL) {
+        if (datas->player->entity != NULL)
+            free(datas->player->entity);
+        free(datas->player);
+    }
     sfClock_destroy(datas->clock);
 }
 

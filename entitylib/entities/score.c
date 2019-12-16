@@ -29,5 +29,7 @@ entity_t *create_score_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
     new->frame_delay = fdelay * 1000000;
     new->update = score_entity_update;
     new->custom = no_custom;
+    new->custom_x = no_custom;
+    new->custom_y = no_custom;
     return (new);
 }

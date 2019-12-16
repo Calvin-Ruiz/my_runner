@@ -10,7 +10,7 @@
 
 void update_player(entity_t *self)
 {
-    self->vel.y += 4.f;
+    self->vel.y += self->gravity;
     self->pos.v1.x += self->vel.x;
     self->pos.v1.y += self->vel.y;
     self->pos.v2.x = self->pos.v1.x + self->size[0];
@@ -32,6 +32,7 @@ entity_t *create_player_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
     new->frame_delay = fdelay * 1000000;
     new->update = update_player;
     new->custom = no_custom;
+    new->gravity = 4.f;
     return (new);
 }
 

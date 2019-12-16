@@ -23,10 +23,13 @@ entity_t *new_instance(entity_t *self, pos_t pos, sfVector2f vel, uchar_t row)
     new->size = self->size;
     new->update = self->update;
     new->custom = self->custom;
+    new->custom_x = self->custom_x;
+    new->custom_y = self->custom_y;
     new->frame_delay = self->frame_delay;
     new->health = self->health;
     new->frame = 0;
     new->timer = 0;
+    new->gravity = 4.f;
     return (new);
 }
 

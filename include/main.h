@@ -28,6 +28,7 @@ typedef struct param {
 
 char **load_map(const char *filename, long int *len, int *nb_cols);
 void mainloop(data_storage_t *datas);
+void my_jump(entity_t *self, entity_t *target);
 
 static inline int apply_parameter(int i, char **args, param_t *parameters)
 {

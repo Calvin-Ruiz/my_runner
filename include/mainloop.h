@@ -21,7 +21,8 @@ static inline void event_press(sfRenderWindow *window, data_storage_t *datas,
         datas->player->entity->vel.x = 12.8f;
     if (event.key.code == sfKeyRight)
         datas->player->entity->vel.x = 38.4f;
-    if (event.key.code == sfKeySpace && (datas->player->entity->vel.y == 4.f)) {
+    if (event.key.code == sfKeySpace
+        && (datas->player->entity->vel.y == datas->player->entity->gravity)) {
         datas->player->entity->pos.v1.y -= 4.01f;
         datas->player->entity->pos.v2.y -= 4.01f;
         datas->player->entity->vel.y = -38.4f;

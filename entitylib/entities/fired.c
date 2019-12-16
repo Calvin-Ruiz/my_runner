@@ -2,20 +2,31 @@
 ** EPITECH PROJECT, 2019
 ** entitylib
 ** File description:
-** bonus.c
+** fired.c
 */
 #include <entity.h>
-#include <data_storage.h>
 
-void bonus_entity_update(entity_t *self)
+void my_dmg(entity_t *self, entity_t *target)
+{
+    int tmp = target->health;
+    target->health -= self->health;
+    self->health -= tmp;
+}
+
+void my_barrier(entity_t *self, entity_t *target)
+{
+    target->health -= self->health;
+}
+
+void update_fired(entity_t *self)
 {
     self->pos.v1.x += self->vel.x;
     self->pos.v1.y += self->vel.y;
-    self->vel.y += self->gravity;
-    self->health--;
+    self->pos.v2.x = self->pos.v1.x + *(self->size);
+    self->pos.v2.y = self->pos.v1.y + self->size[1];
 }
 
-entity_t *create_bonus_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
+entity_t *create_fired(sfTexture *t, uint_t *size, float fdelay, int hp)
 {
     entity_t *new = malloc(sizeof(entity_t));
 
@@ -27,11 +38,11 @@ entity_t *create_bonus_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
     create_sprite(new->sprite, t, size);
     new->size = size;
     new->health = hp;
-    new->frame = 0;
     new->frame_delay = fdelay * 1000000;
-    new->update = bonus_entity_update;
-    new->custom = no_custom;
+    new->update = update_fired;
+    new->custom = my_dmg;
     new->custom_x = no_custom;
     new->custom_y = no_custom;
+    new->gravity = 4.f;
     return (new);
 }

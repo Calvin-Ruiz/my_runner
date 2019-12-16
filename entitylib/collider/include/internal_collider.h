@@ -16,7 +16,7 @@
 
 static inline void collide_custom_only(entity_t *entity, entity_t *fired)
 {
-    if (fired == NULL
+    if (fired == NULL || fired == entity
         || entity->pos.v1.x > fired->pos.v2.x
         || entity->pos.v2.x < fired->pos.v1.x
         || entity->pos.v1.y > fired->pos.v2.y
@@ -71,17 +71,18 @@ static inline void static_collide_with_custom(entity_t *entity, entity_t *solid)
         || entity->pos.v1.y > solid->pos.v2.y
         || entity->pos.v2.y < solid->pos.v1.y)
         return;
-    solid->custom(solid, entity);
     if (entity->pos.v1.y - entity->vel.y + 0.1f > solid->pos.v2.y) {
         entity->pos.v1.y = solid->pos.v2.y;
         entity->pos.v2.y = solid->pos.v2.y + entity->size[1];
         entity->vel.y = 0.f;
+        solid->custom_y(solid, entity);
     } else if (entity->pos.v2.y - entity->vel.y < solid->pos.v1.y + 0.1f) {
         entity->pos.v1.y = solid->pos.v1.y - entity->size[1];
         entity->pos.v2.y = solid->pos.v1.y;
         entity->vel.y = 0.f;
+        solid->custom_y(solid, entity);
     } else
-        collide_once(entity, solid);
+        collide_once_custom(entity, solid);
 }
 
 static inline void collide_with_custom(entity_t *obj, entity_t *blc)
@@ -90,17 +91,18 @@ static inline void collide_with_custom(entity_t *obj, entity_t *blc)
         || obj->pos.v1.x > blc->pos.v2.x || obj->pos.v2.x < blc->pos.v1.x
         || obj->pos.v1.y > blc->pos.v2.y || obj->pos.v2.y < blc->pos.v1.y)
         return;
-    blc->custom(blc, obj);
     if (obj->pos.v1.y - obj->vel.y + 0.1f > blc->pos.v2.y - blc->vel.y) {
         obj->pos.v1.y = blc->pos.v2.y;
         obj->pos.v2.y = blc->pos.v2.y + obj->size[1];
         obj->vel.y = 0.f;
+        blc->custom_y(blc, obj);
     } else if (obj->pos.v2.y - obj->vel.y < blc->pos.v1.y - blc->vel.y + 0.1f) {
         obj->pos.v1.y = blc->pos.v1.y - obj->size[1];
         obj->pos.v2.y = blc->pos.v1.y;
         obj->vel.y = 0.f;
+        blc->custom_y(blc, obj);
     } else
-        collide_dual(obj, blc);
+        collide_dual_custom(obj, blc);
 }
 
 #endif /* INTERNAL_COLLIDER_H_ */
