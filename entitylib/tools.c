@@ -36,20 +36,7 @@ uint_t *get_size(uint_t width, uint_t height, uint_t nbr_rows)
     return (size);
 }
 
-sfVector2f *get_pos(float x, float y)
+void no_update(void *ptr)
 {
-    sfVector2f *pos = malloc(sizeof(sfVector2f) << 1);
-
-    pos[0].x = x;
-    pos[0].y = y;
-    return (pos);
-}
-
-float *get_vel(float x, float y)
-{
-    float *vel = malloc(sizeof(float) << 1);
-
-    vel[0] = x;
-    vel[1] = y;
-    return (vel);
+    ptr = ptr;
 }

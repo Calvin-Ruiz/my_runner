@@ -27,7 +27,7 @@ typedef struct param {
 } param_t;
 
 char **load_map(const char *filename, long int *len, int *nb_cols);
-void mainloop(data_storage_t *datas, char **map, const int nb_cols);
+void mainloop(data_storage_t *datas);
 
 static inline int apply_parameter(int i, char **args, param_t *parameters)
 {
@@ -57,17 +57,19 @@ static inline int my_init_uninit(char **map, param_t *params, int nb_cols,
     long int len)
 {
     data_storage_t *datas = get_data_storage();
-
-    if (init_heart_and_score(datas->textures[1], datas->textures[0]))
-        return (84);
     int sizes[6] = {1, 1, 1, 1, 1, 1};
     int pos[6] = {0, 1, 2, 3, 4, 5};
+
+    datas->map = map;
+    datas->nb_cols = nb_cols;
+    if (init_heart_and_score(datas->textures[1], datas->textures[0]))
+        return (84);
     if (init_collider(pos, sizes, datas, 20))
         return (84);
     sfThread_launch(datas->displayer);
-    mainloop(datas, map, nb_cols);
-    free_storage_content(datas, 63);
+    mainloop(datas);
     destroy_heart_and_score();
+    free_storage_content(datas, 63);
     free(*map - 1);
     free(map);
     return (0);

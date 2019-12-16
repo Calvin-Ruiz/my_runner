@@ -45,10 +45,20 @@ static void save_higher_score(data_storage_t *datas)
     }
 }
 
+static void free_groups(data_storage_t *datas)
+{
+    free(datas->sounds);
+    free(datas->textures);
+    free(datas->entities);
+    free(datas->entitylists);
+    free(datas->player->entity);
+    free(datas->player);
+    sfClock_destroy(datas->clock);
+}
+
 void free_storage_content(data_storage_t *datas, int mask)
 {
     int i = -1;
-
     while (++i < datas->nb_sounds && (mask & 4))
         if (datas->sounds[i] != NULL) {
             sfSound_destroy(datas->sounds[i]);
@@ -64,7 +74,8 @@ void free_storage_content(data_storage_t *datas, int mask)
     i = -1;
     while (++i < datas->nb_entitylist && (mask & 32))
         destroy_entitylist(datas->entitylists[i]);
-    if (datas->window != NULL && (mask & 2))
+    if ((mask & 2) && datas->window != NULL)
         destroy_window(datas);
     save_higher_score(datas);
+    free_groups(datas);
 }

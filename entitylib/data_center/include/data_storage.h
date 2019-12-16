@@ -33,6 +33,8 @@ typedef struct data_storage {
     long long last_refresh;
     long long last_update;
     long long coll_target;
+    char **map;
+    int nb_cols;
 } data_storage_t;
 
 data_storage_t *get_data_storage(void);

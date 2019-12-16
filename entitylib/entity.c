@@ -6,10 +6,10 @@
 */
 #include <entitybase.h>
 
-void no_custom(entity_t *self, void *args)
+void no_custom(void *ptr, void *ptr2)
 {
-    if (self != args)
-        return;
+    ptr = ptr2;
+    ptr2 = ptr;
 }
 
 entity_t *new_instance(entity_t *self, pos_t pos, sfVector2f vel, uchar_t row)

@@ -8,19 +8,18 @@
 #ifndef COLLIDER_PART_H_
 #define COLLIDER_PART_H_
 
+#include <stdio.h>
+
 static inline void collide_once(entity_t *entity, entity_t *solid)
 {
-    printf("COLL\n");
     if (entity->pos.v1.x - entity->vel.x + 0.1f > solid->pos.v2.x) {
         entity->pos.v1.x = solid->pos.v2.x;
         entity->pos.v2.x = solid->pos.v2.x + *(entity->size);
         entity->vel.x = (entity->vel.x < 0.f) ? 0.f : entity->vel.x;
-        printf("1\n");
     } else if (entity->pos.v2.x - entity->vel.x < solid->pos.v1.x + 0.1f) {
         entity->pos.v1.x = solid->pos.v1.x - *(entity->size);
         entity->pos.v2.x = solid->pos.v1.x;
         entity->vel.x = (entity->vel.x > 0.f) ? 0.f : entity->vel.x;
-        printf("2\n");
     }
 }
 

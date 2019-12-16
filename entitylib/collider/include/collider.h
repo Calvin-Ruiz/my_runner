@@ -18,6 +18,7 @@ void collwith_fired(entity_t *entity, collider_t *data);
 void collwith_mob(entity_t *entity, collider_t *data);
 void collwith_player(entity_t *entity, collider_t *player);
 void static_collwith_player(entity_t *entity, collider_t *data);
+void load_line(data_storage_t *datas);
 
 static inline void check_update(entity_t *entity)
 {

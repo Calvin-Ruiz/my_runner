@@ -8,10 +8,6 @@
 #include <entitylist.h>
 #include <data_storage.h>
 
-void g_entity_update(entity_t *self)
-{
-}
-
 entity_t *create_g_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
 {
     entity_t *new = malloc(sizeof(entity_t));
@@ -25,7 +21,7 @@ entity_t *create_g_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
     new->size = size;
     new->health = hp;
     new->frame_delay = fdelay * 1000000;
-    new->update = g_entity_update;
+    new->update = no_update;
     new->custom = no_custom;
     return (new);
 }

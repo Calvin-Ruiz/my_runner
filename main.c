@@ -55,8 +55,9 @@ static int my_init_entities(data_storage_t *datas)
 static int my_init(char **map, param_t *params, int nb_cols, long int len)
 {
     data_storage_t *datas = init_data_storage(0, 4, 2, 6);
-    if (create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32}, "My Runner",
-        sfClose | sfResize, params->fps))
+    int tmp = create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32},
+        "My Runner", sfClose | sfResize, params->fps);
+    if (tmp)
         return (84);
     my_init_textures(datas);
     if (check_data_storage_content(datas) & 11) {

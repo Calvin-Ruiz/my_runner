@@ -10,7 +10,8 @@
 
 #include "entitybase.h"
 
-void no_custom(entity_t *self, void *args);
+void no_update(entity_t *ptr);
+void no_custom(entity_t *ptr, void *ptr2);
 entity_t *new_instance(entity_t *self, pos_t pos, sfVector2f vel, uchar_t rw);
 void entity_blit(entity_t *self, sfRenderWindow *window);
 void create_sprite(sfSprite **sprite, sfTexture *texture, uint_t *size);

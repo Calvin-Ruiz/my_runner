@@ -17,25 +17,25 @@ collider_t *get_collider_data(void)
 static void collide_and_update_all(collider_t *data)
 {
     const long long frame_delay = data->frame_delay;
+    data_storage_t *stor = get_data_storage();
     sfClock *clock = data->data_clock;
-    long long *actual = &(get_data_storage()->last_update);
-    long long *target = &(get_data_storage()->coll_target);
+    long long *actual = &(stor->last_update);
     long int nb_loops = 0;
-
-    *target = sfClock_getElapsedTime(clock).microseconds;
+    stor->coll_target = sfClock_getElapsedTime(clock).microseconds;
     while (data->alive) {
-        *target += frame_delay;
+        stor->coll_target += frame_delay;
         collide_solid_static(data);
         collide_solid_dynamic(data);
         collide_fired(data);
         collide_mob(data);
         collide_player(data);
         *actual = sfClock_getElapsedTime(clock).microseconds;
-        if (*target > *actual)
-            sfSleep((sfTime) {*target - *actual});
-        nb_loops++;
+        if (stor->coll_target > *actual)
+            sfSleep((sfTime) {stor->coll_target - *actual});
+        if (!(nb_loops++ % 5) || (nb_loops % 5) == 2)
+            load_line(stor);
     }
-    data->time_lost_per_frame = (*actual - *target) / nb_loops;
+    data->time_lost_per_frame = (*actual - stor->coll_target) / nb_loops;
 }
 
 static void init_collider_datas(int *pos, data_storage_t *datas,
@@ -97,4 +97,5 @@ void destroy_collider(void)
     free(data->hollow_dynamic);
     free(data->fired);
     free(data->mob);
+    sfMutex_destroy(get_data_storage()->my_lock);
 }
