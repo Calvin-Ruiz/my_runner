@@ -31,37 +31,54 @@ static void my_help(int n, char **args)
 
 static void my_init_textures(data_storage_t *datas)
 {
-    datas->textures[0] = sfTexture_createFromFile("textures/end.png", NULL);
-    datas->textures[1] = sfTexture_createFromFile("textures/heart.png", NULL);
-    datas->textures[2] = sfTexture_createFromFile("textures/player.png", NULL);
-    datas->textures[3] = sfTexture_createFromFile("textures/ground.png", NULL);
-    datas->textures[4] = sfTexture_createFromFile("textures/jumper.png", NULL);
-    datas->textures[5] = sfTexture_createFromFile("textures/barrier.png", NULL);
+    int fd = open("textures/bloclist.txt", O_RDONLY);
+    char *filename;
+    int i = 0;
+
+    if (fd == -1) {
+        datas->textures[0] = NULL;
+        return;
+    }
+    filename = fast_get_next_line(fd);
+    while (filename && *filename) {
+        datas->textures[i++] = sfTexture_createFromFile(filename, NULL);
+        filename = fast_get_next_line(fd);
+    }
+    close(fd);
 }
 
 static void my_init_entity_bases(data_storage_t *datas)
 {
-    datas->entities[0] = create_player_entity(datas->textures[2],
+    datas->entities[0] = create_player_entity(datas->textures[3],
         get_size(64, 128, 3), 0.15f, 10);
-    datas->entities[1] = create_surface(datas->textures[3], get_size(64, 64, 1),
+    datas->entities[1] = create_surface(datas->textures[4], get_size(64, 64, 1),
         0.2f, no_custom);
-    datas->entities[2] = create_surface(datas->textures[4], get_size(64, 64, 1),
+    datas->entities[2] = create_surface(datas->textures[5], get_size(64, 64, 1),
         0.2f, my_jump);
-    datas->entities[3] = create_fired(datas->textures[5],
+    datas->entities[3] = create_hollow(datas->textures[6], get_size(64, 64, 1),
+        0.2f, my_kill);
+    datas->entities[4] = create_surface(datas->textures[7], get_size(64, 64, 1),
+        0.2f, my_gravity_inverter);
+    datas->entities[5] = create_hollow(datas->textures[8], get_size(64, 64, 1),
+        0.2f, my_jump_sphere);
+    datas->entities[6] = create_hollow(datas->textures[9], get_size(64, 64, 1),
+        0.2f, my_overjump_sphere);
+    datas->entities[7] = create_fired(datas->textures[2],
         get_size(1, 64 * 32, 1), 2.f, 1073741824);
-    datas->entities[3]->custom = my_barrier;
+    datas->entities[7]->custom = my_barrier;
 }
 
 static int my_init_entities(data_storage_t *datas)
 {
-    datas->entitylists[0] = create_entitylist(128);
+    datas->entitylists[0] = create_entitylist(96);
     datas->entitylists[1] = create_entitylist(32);
-    datas->entitylists[2] = create_entitylist(32);
+    datas->entitylists[2] = create_entitylist(160);
     datas->entitylists[3] = create_entitylist(32);
-    datas->entitylists[4] = create_entitylist(16);
-    datas->entitylists[5] = create_entitylist(16);
+    datas->entitylists[4] = create_entitylist(6);
+    datas->entitylists[5] = create_entitylist(4);
     my_init_entity_bases(datas);
-    entitylist_append(datas->entitylists[4], new_instance(datas->entities[3],
+    entitylist_append(datas->entitylists[4], new_instance(
+        datas->entities[datas->nb_entity - 1],
         (pos_t) {(sfVector2f) {-64.f, 0}, (sfVector2f) {0, 0}},
         (sfVector2f) {25.6f, 0}, 0));
     if (!check_data_storage_content(datas))
@@ -72,7 +89,7 @@ static int my_init_entities(data_storage_t *datas)
 
 static int my_init(char **map, param_t *params, int nb_cols, long int len)
 {
-    data_storage_t *datas = init_data_storage(0, 6, 4, 6);
+    data_storage_t *datas = init_data_storage(0, 10, 8, 6);
     int tmp = create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32},
         "My Runner", sfClose | sfResize, params->fps);
 

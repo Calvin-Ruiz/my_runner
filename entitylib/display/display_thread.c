@@ -96,3 +96,11 @@ void my_displayer(data_storage_t *datas)
             sfSleep((sfTime) {target - *actual});
     }
 }
+
+void destroy_displayer(data_storage_t *datas)
+{
+    sfThread_wait(datas->displayer);
+    sfRenderWindow_display(datas->window);
+    sfMutex_destroy(datas->my_lock);
+    sfRenderWindow_close(datas->window);
+}

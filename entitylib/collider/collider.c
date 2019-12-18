@@ -90,6 +90,7 @@ void destroy_collider(void)
     collider_t *data = get_collider_data();
 
     data->alive = 0;
+    sfThread_wait(data->updater);
     sfThread_destroy(data->updater);
     free(data->solid_static);
     free(data->solid_dynamic);
@@ -97,5 +98,4 @@ void destroy_collider(void)
     free(data->hollow_dynamic);
     free(data->fired);
     free(data->mob);
-    sfMutex_destroy(get_data_storage()->my_lock);
 }

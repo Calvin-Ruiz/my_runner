@@ -25,12 +25,14 @@ FILES = blocs.c \
 	entitylib/entities/bonus.c \
 	entitylib/entities/fired.c \
 	entitylib/entities/g_entity.c \
+	entitylib/entities/hollow.c \
 	entitylib/entities/score.c \
 	entitylib/entities/surface.c \
 	entitylib/entity.c \
 	entitylib/entitylist.c \
 	entitylib/player.c \
 	entitylib/tools.c \
+	get_next_line.c \
 	load_map.c \
 	main.c \
 	mainloop.c \

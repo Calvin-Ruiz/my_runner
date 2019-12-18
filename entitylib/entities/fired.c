@@ -10,7 +10,7 @@ void my_dmg(entity_t *self, entity_t *target)
 {
     int tmp = target->health;
     target->health -= self->health;
-    self->health -= tmp;
+    self->health = (self->health > tmp) ? self->health - tmp : 0;
 }
 
 void my_barrier(entity_t *self, entity_t *target)

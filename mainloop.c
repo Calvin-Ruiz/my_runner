@@ -31,15 +31,14 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas)
 {
     sfEvent event;
     sfTime test = {50000};
+
     sfMutex_lock(datas->my_lock);
     while (sfRenderWindow_pollEvent(window, &event)) {
         if (event.type == sfEvtClosed) {
             sfMutex_unlock(datas->my_lock);
             datas->alive = 0;
             destroy_collider();
-            sfThread_destroy(datas->displayer);
-            sfRenderWindow_display(window);
-            sfRenderWindow_close(window);
+            destroy_displayer(datas);
             return;
         }
         if (event.type == sfEvtKeyPressed)
