@@ -14,7 +14,7 @@ collider_t *get_collider_data(void)
     return (data);
 }
 
-static void collide_and_update_all(collider_t *data)
+static void collider_updater(collider_t *data)
 {
     const long long frame_delay = data->frame_delay;
     data_storage_t *stor = get_data_storage();
@@ -78,7 +78,7 @@ int init_collider(int *pos, int *sizes, data_storage_t *datas, long long fps)
     data->mob = malloc(sizeof(void *) * data->nb_mob);
     init_collider_datas(pos, datas, data, fps);
     data->alive = 1;
-    data->updater = sfThread_create((void (*)(void *)) collide_and_update_all, data);
+    data->updater = sfThread_create((void (*)(void *)) collider_updater, data);
     if (data->updater == NULL)
         return (84);
     sfThread_launch(data->updater);
