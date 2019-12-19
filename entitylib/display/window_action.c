@@ -93,7 +93,7 @@ void check_window_size(sfRenderWindow *window, data_storage_t *datas)
         size.x = (size.x < 800) ? 800 : 1920;
     if (size.y < 600 || size.y > 1080)
         size.y = (size.y < 600) ? 600 : 1080;
-    datas->coef_x = 1600.f / size.x;
-    datas->coef_y = 800.f / size.y;
+    datas->coef_x = 1280.f / size.x;
+    datas->coef_y = (64.f * datas->map[0][-1]) / size.y;
     sfRenderWindow_setSize(window, size);
 }

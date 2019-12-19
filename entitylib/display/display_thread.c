@@ -14,7 +14,7 @@ static inline void blit_entitylist(data_storage_t *data, entitylist_t *self,
     entity_t *entity;
     sfRenderWindow *window = data->window;
     const float time_dec = 0.00002f * (data->last_refresh - data->last_update)
-        - 1.f;
+        - 0.6f;
 
     while (++i < self->len) {
         entity = self->list[i];
@@ -35,7 +35,7 @@ static void blit_player(data_storage_t *data, entity_t *player,
     const float dec, long long delta_time)
 {
     const float time_dec = 0.00002f * (data->last_refresh - data->last_update)
-        - 1.f;
+        - 0.6f;
     sfVector2f pos = player->pos.v1;
 
     pos.x += dec + player->vel.x * time_dec;
@@ -81,7 +81,6 @@ void my_displayer(data_storage_t *datas)
     const float scroll = coll->my_scroll.x / 1000000;
     sfRenderWindow *window = datas->window;
     long long target = sfClock_getElapsedTime(datas->clock).microseconds;
-    long long *actual = &(datas->last_refresh);
 
     datas->tref = target;
     while (datas->alive) {
@@ -91,16 +90,15 @@ void my_displayer(data_storage_t *datas)
         sfMutex_lock(datas->my_lock);
         update_window(window, internal_datas, datas);
         sfMutex_unlock(datas->my_lock);
-        *actual = sfClock_getElapsedTime(datas->clock).microseconds;
-        if (target > *actual)
-            sfSleep((sfTime) {target - *actual});
+        datas->score = (target - datas->tref) >> 10;
+        datas->last_refresh = sfClock_getElapsedTime(datas->clock).microseconds;
+        if (target > datas->last_refresh)
+            sfSleep((sfTime) {target - datas->last_refresh});
     }
 }
 
 void destroy_displayer(data_storage_t *datas)
 {
     sfThread_wait(datas->displayer);
-    sfRenderWindow_display(datas->window);
     sfMutex_destroy(datas->my_lock);
-    sfRenderWindow_close(datas->window);
 }

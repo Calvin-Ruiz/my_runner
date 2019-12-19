@@ -1,6 +1,7 @@
 textures/end.png
 textures/heart.png
 textures/barrier.png
+textures/default.png
 textures/player.png
 textures/ground.png
 textures/jumper.png

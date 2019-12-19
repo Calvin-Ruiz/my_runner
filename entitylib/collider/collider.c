@@ -19,8 +19,7 @@ static void collide_and_update_all(collider_t *data)
     const long long frame_delay = data->frame_delay;
     data_storage_t *stor = get_data_storage();
     sfClock *clock = data->data_clock;
-    long long *actual = &(stor->last_update);
-    long int nb_loops = 0;
+    long int nloop = 0;
     stor->coll_target = sfClock_getElapsedTime(clock).microseconds;
     while (data->alive) {
         stor->coll_target += frame_delay;
@@ -29,13 +28,14 @@ static void collide_and_update_all(collider_t *data)
         collide_fired(data);
         collide_mob(data);
         collide_player(data);
-        *actual = sfClock_getElapsedTime(clock).microseconds;
-        if (stor->coll_target > *actual)
-            sfSleep((sfTime) {stor->coll_target - *actual});
-        if (!(nb_loops++ % 5) || (nb_loops % 5) == 2)
+        update_hollow(data);
+        stor->last_update = sfClock_getElapsedTime(clock).microseconds;
+        if (stor->coll_target > stor->last_update)
+            sfSleep((sfTime) {stor->coll_target - stor->last_update});
+        if (!(nloop++ % 5) || (nloop % 5) == 2)
             load_line(stor);
     }
-    data->time_lost_per_frame = (*actual - stor->coll_target) / nb_loops;
+    data->time_lost_per_frame = (stor->last_update - stor->coll_target) / nloop;
 }
 
 static void init_collider_datas(int *pos, data_storage_t *datas,

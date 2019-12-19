@@ -9,5 +9,6 @@
 #define DISPLAY_THREAD_H_
 
 void my_displayer(void *ptr);
+void destroy_displayer(data_storage_t *datas);
 
 #endif /* DISPLAY_THREAD_H_ */

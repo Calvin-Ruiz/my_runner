@@ -10,6 +10,7 @@ NAME = my_runner
 LIB = entitylib
 
 FILES = blocs.c \
+	editor.c \
 	entitylib/collider/collider.c \
 	entitylib/collider/collwith_2.c \
 	entitylib/collider/collwith.c \
@@ -36,12 +37,14 @@ FILES = blocs.c \
 	load_map.c \
 	main.c \
 	mainloop.c \
+	menu_bar.c \
+	my_init.c \
 	my_read.c
 
 all :	$(NAME)
 
 $(NAME):
-	gcc -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -Ofast -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 
 clean:
 	rm -f *.o
@@ -70,10 +73,14 @@ sync:	pull	push
 
 debug:
 	clear
-	gcc -o $(NAME) $(FILES) -Wall -Wextra -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -Ofast -o $(NAME) $(FILES) -Wall -Wextra -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
 
 valgrind:
-	gcc -g3 -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -Ofast -g3 -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+
+gdb:
+	clear
+	gcc -g3 -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -Wall -Wextra
 
 update:
 	./mmkfile.sh MUL_my_runner my_runner

@@ -28,13 +28,12 @@ void my_game_over(sfRenderWindow *window, internal_data_t *datas,
 {
     sfClock *my_clock = sfClock_create();
     sfVector2f pos;
-
     sfRenderWindow_drawSprite(window, datas->game_over, NULL);
     if (stor->score > stor->higher_score) {
         pos.x = 650;
         pos.y = 500;
-        char str[] = "New best score !\nNow  :  00000000\nBefore : 00000000";
-        my_write_score(str + 32, str + 50, stor);
+        char str[] = "New best score !\nNow  : 00000000\nBest : 00000000";
+        my_write_score(str + 31, str + 47, stor);
         sfText_setString(datas->score_text, str);
         sfText_setPosition(datas->score_text, pos);
         sfRenderWindow_drawText(window, datas->score_text, NULL);
@@ -54,8 +53,8 @@ int init_heart_and_score(sfTexture *heart, sfTexture *end_texture)
     internal_data_t *datas = get_internal_data();
     sfVector2f pos;
 
-    pos.x = 1200;
-    pos.y = 716;
+    pos.x = 480;
+    pos.y = 8;
     datas->game_over = sfSprite_create();
     datas->heart_sprite = sfSprite_create();
     if (datas->heart_sprite == NULL || datas->game_over == NULL)
@@ -63,7 +62,7 @@ int init_heart_and_score(sfTexture *heart, sfTexture *end_texture)
     sfSprite_setTexture(datas->game_over, end_texture, sfTrue);
     sfSprite_setTexture(datas->heart_sprite, heart, sfTrue);
     datas->score_text = sfText_create();
-    datas->text_font = sfFont_createFromFile("textures/text_font.otf");
+    datas->text_font = sfFont_createFromFile("textures/text_font.ttf");
     if (datas->score_text == NULL || datas->text_font == NULL)
         return (84);
     sfText_setFont(datas->score_text, datas->text_font);
@@ -77,13 +76,11 @@ void display_health_and_score(sfRenderWindow *window, data_storage_t *stor,
 {
     sfVector2f pos;
     int health = stor->player->entity->health;
-    char str[] = "Your score : 00000000\n Best score : 00000000";
+    char str[] = "Your score : 00000000\nBest score : 00000000";
 
-    my_write_score(str + 20, str + 43, stor);
-    if (health == 0)
-        my_game_over(window, datas, stor);
-    pos.x = 4;
-    pos.y = 760;
+    my_write_score(str + 20, str + 42, stor);
+    pos.x = 2;
+    pos.y = 4;
     while (health-- > 0) {
         sfSprite_setPosition(datas->heart_sprite, pos);
         sfRenderWindow_drawSprite(window, datas->heart_sprite, NULL);

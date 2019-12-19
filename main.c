@@ -6,27 +6,28 @@
 */
 #include "include/main.h"
 
-static void my_help(int n, char **args)
+int my_init_uninit(char **map, int nb_cols, param_t *params)
 {
-    int fd;
-    char *str;
-    long int len = 0;
+    data_storage_t *datas = get_data_storage();
+    int return_value = 0;
 
-    if (n != 2 || args[1][0] != '-' || args[1][1] != 'h' || args[1][2] != '\0')
-        return;
-    fd = open("readme.txt", O_RDONLY);
-    if (fd == -1) {
-        write(2, "Help unavailable : file 'readme.txt' not found.\n", 48);
-        return;
+    if (sfRenderWindow_isOpen(datas->window)) {
+        if (params->menu) {
+            write(1, "No menu\n", 8);
+            return (0);
+        } else if (params->editor)
+            nb_cols = map_editor(map, nb_cols, params->nb_lines, params->name);
+        else
+            return_value = my_play(map, nb_cols);
+        params->menu = !params->menu;
+        if (return_value || my_init_uninit(datas->map, nb_cols, params))
+            return (84);
+    } else {
+        free_storage_content(datas, 63);
+        free(*map - 1);
+        free(map);
     }
-    str = my_read(fd, &len);
-    close(fd);
-    if (str == NULL) {
-        write(2, "Help unavailable : read error\n", 30);
-        return;
-    }
-    write(1, str, len);
-    free(str);
+    return (0);
 }
 
 static void my_init_textures(data_storage_t *datas)
@@ -45,27 +46,6 @@ static void my_init_textures(data_storage_t *datas)
         filename = fast_get_next_line(fd);
     }
     close(fd);
-}
-
-static void my_init_entity_bases(data_storage_t *datas)
-{
-    datas->entities[0] = create_player_entity(datas->textures[3],
-        get_size(64, 128, 3), 0.15f, 10);
-    datas->entities[1] = create_surface(datas->textures[4], get_size(64, 64, 1),
-        0.2f, no_custom);
-    datas->entities[2] = create_surface(datas->textures[5], get_size(64, 64, 1),
-        0.2f, my_jump);
-    datas->entities[3] = create_hollow(datas->textures[6], get_size(64, 64, 1),
-        0.2f, my_kill);
-    datas->entities[4] = create_surface(datas->textures[7], get_size(64, 64, 1),
-        0.2f, my_gravity_inverter);
-    datas->entities[5] = create_hollow(datas->textures[8], get_size(64, 64, 1),
-        0.2f, my_jump_sphere);
-    datas->entities[6] = create_hollow(datas->textures[9], get_size(64, 64, 1),
-        0.2f, my_overjump_sphere);
-    datas->entities[7] = create_fired(datas->textures[2],
-        get_size(1, 64 * 32, 1), 2.f, 1073741824);
-    datas->entities[7]->custom = my_barrier;
 }
 
 static int my_init_entities(data_storage_t *datas)
@@ -87,14 +67,16 @@ static int my_init_entities(data_storage_t *datas)
     return (84);
 }
 
-static int my_init(char **map, param_t *params, int nb_cols, long int len)
+static int my_init(char **map, param_t *params, int nb_cols)
 {
-    data_storage_t *datas = init_data_storage(0, 10, 8, 6);
+    data_storage_t *datas = init_data_storage(0, 11, 64, 6);
     int tmp = create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32},
         "My Runner", sfClose | sfResize, params->fps);
 
     if (tmp)
         return (84);
+    if (params->fen_size.x != 0)
+        sfRenderWindow_setSize(datas->window, params->fen_size);
     my_init_textures(datas);
     if (check_data_storage_content(datas) & 11) {
         if ((check_data_storage_content(datas) & 1) == 0)
@@ -105,13 +87,13 @@ static int my_init(char **map, param_t *params, int nb_cols, long int len)
         return (84);
     datas->player = create_player((*map)[-1]);
     datas->player->entity->vel.x = 25.6f;
-    return (my_init_uninit(map, params, nb_cols, len));
+    return (my_init_uninit(map, nb_cols, params));
 }
 
 int main(int nargs, char **args)
 {
     int i = 0;
-    param_t params[1] = {(param_t) {60, '\0' + 1, '\0', '\0', 0, '\0', 0}};
+    param_t params[1] = {(param_t) {60, 1, 0, 0, 0, 0, 0, (sfVector2u) {0, 0}}};
     long int len = 0;
     int nb_cols = 0;
     char **map;
@@ -120,13 +102,13 @@ int main(int nargs, char **args)
     while (++i < nargs) {
         if (args[i][0] == '-')
             i = apply_parameter(i, args, params);
-        else
+        else if (i < nargs)
             params->name = args[i];
     }
-    params->editor = params->editor | params->nb_lines;
-    params->menu = params->menu | !(params->practice | params->editor);
-    map = load_map(params->name, &len, &nb_cols);
+    params->editor = params->editor || params->nb_lines;
+    params->menu = params->menu & !(params->practice | params->editor);
+    map = load_map(params->name, &len, &nb_cols, params->nb_lines);
     if (map == NULL)
         return (84);
-    return (my_init(map, params, nb_cols, len));
+    return (my_init(map, params, nb_cols));
 }

@@ -9,10 +9,13 @@
 #define MAINLOOP_H_
 
 #include <entitylib.h>
+#include <display_thread.h>
 
 static inline void event_press(sfRenderWindow *window, data_storage_t *datas,
     sfEvent event)
 {
+    entity_t *entity = datas->player->entity;
+
     if (event.key.code == sfKeyEscape)
         my_pause_game(window, datas);
     if (event.key.code == sfKeyF12)
@@ -22,10 +25,10 @@ static inline void event_press(sfRenderWindow *window, data_storage_t *datas,
     if (event.key.code == sfKeyRight)
         datas->player->entity->vel.x = 38.4f;
     if (event.key.code == sfKeySpace
-        && (datas->player->entity->vel.y == datas->player->entity->gravity)) {
-        datas->player->entity->pos.v1.y -= 4.01f;
-        datas->player->entity->pos.v2.y -= 4.01f;
-        datas->player->entity->vel.y = -38.4f;
+        && (entity->vel.y == entity->gravity)) {
+        entity->pos.v1.y -= entity->gravity * 1.01f;
+        entity->pos.v2.y -= entity->gravity * 1.01f;
+        entity->vel.y = -9.f * entity->gravity;
     }
 }
 

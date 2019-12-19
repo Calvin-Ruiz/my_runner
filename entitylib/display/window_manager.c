@@ -86,8 +86,8 @@ void update_window(sfRenderWindow *window, internal_data_t *datas,
     if (size.y < 600 || size.y > 1080)
         size.y = (size.y < 600) ? 600 : 1080;
     sfRenderWindow_setSize(window, size);
-    stor->coef_x = 1600.f / size.x;
-    stor->coef_y = 800.f / size.y;
+    stor->coef_x = 1280.f / size.x;
+    stor->coef_y = (64.f * stor->map[0][-1]) / size.y;
     fpointer.x = pointer.x * stor->coef_x;
     fpointer.y = pointer.y * stor->coef_y;
     sfSprite_setPosition(datas->cursor, fpointer);

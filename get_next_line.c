@@ -12,21 +12,21 @@ char *fast_get_next_line(int fd)
     static long int pos = -2;
     static long int len = 0;
     static char *str = NULL;
-    int pos2;
-
-    if (pos == -2 || fd != fd_old) {
+    if (pos == -2 || fd != fd_old || str == NULL) {
         pos = -1;
         fd_old = fd;
         len = 0;
         str = my_read(fd, &len);
     }
-    if (pos >= len || str == NULL)
+    if (pos >= len && str) {
+        free(str);
+        str = NULL;
+    }
+    if (str == NULL)
         return (NULL);
-    pos2 = pos;
+    int pos2 = pos;
     while (++pos < len && str[pos] != '\n');
     str[pos] = '\0';
-    if (pos == len && str != NULL)
-        free(str);
     return (str + pos2 + 1);
 }
 

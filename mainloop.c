@@ -6,16 +6,15 @@
 */
 #include "include/mainloop.h"
 
-void load_line(data_storage_t *datas)
+int *load_line(data_storage_t *datas)
 {
-    const int nb_cols = datas->nb_cols;
-    char **map = datas->map;
+    unsigned char **map = (unsigned char **) datas->map;
     static int col = -1;
-    const char col_len = (*map)[-1];
+    const unsigned char col_len = (*map)[-1];
     unsigned char i = -1;
 
-    if (++col >= nb_cols)
-        return;
+    if (++col >= datas->nb_cols)
+        return (&col);
     while (++i < col_len) {
         if (map[col][i]) {
             pos_t pos = {(sfVector2f) {col * 64, i * 64},
@@ -25,12 +24,12 @@ void load_line(data_storage_t *datas)
             entitylist_append(datas->entitylists[map[col][i] >> 6], entity);
         }
     }
+    return (&col);
 }
 
 static void my_events(sfRenderWindow *window, data_storage_t *datas)
 {
     sfEvent event;
-    sfTime test = {50000};
 
     sfMutex_lock(datas->my_lock);
     while (sfRenderWindow_pollEvent(window, &event)) {
@@ -39,6 +38,8 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas)
             datas->alive = 0;
             destroy_collider();
             destroy_displayer(datas);
+            *load_line(datas) = -1;
+            sfRenderWindow_close(datas->window);
             return;
         }
         if (event.type == sfEvtKeyPressed)
@@ -47,17 +48,26 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas)
             event_release(datas->player->entity, event);
     }
     sfMutex_unlock(datas->my_lock);
-    sfSleep(test);
 }
 
 void mainloop(data_storage_t *datas)
 {
     sfRenderWindow *window = datas->window;
     int col = 0;
+    int *col_ptr = load_line(datas);
+    sfTime test = {50000};
 
-    while (col++ < 21)
+    while (col++ < 20)
         load_line(datas);
-    while (sfRenderWindow_isOpen(datas->window)) {
+    while (sfRenderWindow_isOpen(window)
+        && datas->player->entity->health > 0) {
         my_events(window, datas);
+        sfSleep(test);
+    }
+    if (sfRenderWindow_isOpen(window)) {
+        datas->alive = 0;
+        destroy_collider();
+        destroy_displayer(datas);
+        *col_ptr = -1;
     }
 }
