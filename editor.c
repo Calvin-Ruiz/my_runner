@@ -38,11 +38,10 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas, int *col,
         }
         if (event.type == sfEvtKeyPressed)
             event_press(event, col);
-        if (event.type == sfEvtMouseButtonPressed)
-            mouse_press(event, menubar, datas, *col);
-        if (event.type == sfEvtMouseWheelScrolled)
-            mouse_wheel(event, menubar);
+        else if (event.type == sfEvtMouseWheelScrolled)
+            mouse_wheel(event, menubar, datas);
     }
+    mouse_press(window, menubar, datas, *col);
 }
 
 static int my_opener(const char *filename)
@@ -98,19 +97,19 @@ int map_editor(char **map, int nb_cols, int nb_lines_param,
     sfRenderWindow *window = datas->window;
     const char nb_lines = map[0][-1];
     int col = 0;
-    menu_bar_t *menubar = create_menu_bar();
+    menu_bar_t *menubar = create_menu_bar(window);
 
-    sfRenderWindow_setMouseCursorVisible(window, sfTrue);
     datas->map = map;
     datas->nb_cols = nb_cols;
     while (sfRenderWindow_isOpen(window)) {
         sfRenderWindow_drawSprite(window, data->background, NULL);
         display_all(window, datas, col - 1, nb_lines);
+        update_menu_bar(window, menubar, datas->entities);
         sfRenderWindow_display(window);
         check_window_size(window, datas);
         my_events(window, datas, &col, menubar);
     }
+    destroy_menu_bar(menubar);
     save_map(datas->map, nb_cols, filename, datas);
-    sfRenderWindow_setMouseCursorVisible(window, sfFalse);
     return (nb_cols);
 }

@@ -4,8 +4,34 @@ textures/barrier.png
 textures/default.png
 textures/player.png
 textures/ground.png
-textures/jumper.png
 textures/obstacle.png
+textures/jumper.png
 textures/gravity inverter.png
+textures/ice.png
+textures/ceiling.png
+textures/sticky ceiling.png
+textures/spring ceiling.png
+textures/water.png
+textures/ultimate ground.png
+textures/toggle barrier x.png
+textures/toggle barrier y.png
 textures/jump sphere.png
 textures/overjump sphere.png
+textures/anti jump sphere.png
+textures/gravity inverter sphere.png
+textures/cinetic boost sphere.png
+textures/cinetic inverter sphere.png
+textures/tp sphere.png
+textures/creation sphere.png
+textures/cube portal.png
+textures/vessel portal.png
+textures/gravity jump portal.png
+textures/normal gravity portal.png
+textures/gravity inverter portal.png
+textures/switch gravity portal.png
+textures/cinetic booster portal.png
+textures/cinetic inverter.png
+textures/link portal.png
+textures/linked portal.png
+textures/skip portal.png
+textures/loop portal.png

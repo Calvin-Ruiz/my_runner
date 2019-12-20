@@ -9,7 +9,12 @@ NAME = my_runner
 
 LIB = entitylib
 
-FILES = blocs.c \
+FILES = blocs/blocs_1.c \
+	blocs/blocs_2.c \
+	blocs/my_init.c \
+	blocs/portals_1.c \
+	blocs/portals_2.c \
+	blocs/sphere_1.c \
 	editor.c \
 	entitylib/collider/collider.c \
 	entitylib/collider/collwith_2.c \
@@ -38,7 +43,6 @@ FILES = blocs.c \
 	main.c \
 	mainloop.c \
 	menu_bar.c \
-	my_init.c \
 	my_read.c
 
 all :	$(NAME)
@@ -77,10 +81,6 @@ debug:
 
 valgrind:
 	gcc -Ofast -g3 -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
-
-gdb:
-	clear
-	gcc -g3 -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -Wall -Wextra
 
 update:
 	./mmkfile.sh MUL_my_runner my_runner

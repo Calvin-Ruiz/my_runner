@@ -1,5 +1,6 @@
 Finite runner created with CSFML.
 Based on Le-cube available on https://github.com/Calvin-Ruiz/Le-cube
+Developped by Calvin Ruiz
 
 USAGE
   ./my_runner map.lvl
@@ -21,7 +22,8 @@ USER INTERACTIONS
   KEY_LEFT          left move
   KEY_RIGHT         right move
   LEFT_CLIC	    place bloc (editor only)
+		    select bloc (editor tools window)
   RIGHT_CLIC	    remove bloc (editor only)
+		    switch page (editor tools window)
   MOUSE_ROLL	    change selected bloc (editor only)
-		    change bloc type if SHIFT is pressed
-  MOUSE_ROLL_BUTTON change bloc types
+		    step move of 4 if SHIFT is pressed

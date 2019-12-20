@@ -14,7 +14,7 @@ static inline void blit_entitylist(data_storage_t *data, entitylist_t *self,
     entity_t *entity;
     sfRenderWindow *window = data->window;
     const float time_dec = 0.00002f * (data->last_refresh - data->last_update)
-        - 0.6f;
+        - 1.f;
 
     while (++i < self->len) {
         entity = self->list[i];
@@ -22,7 +22,7 @@ static inline void blit_entitylist(data_storage_t *data, entitylist_t *self,
             pos = entity->pos.v1;
             pos.x += dec + entity->vel.x * time_dec;
             pos.y += ((entity->vel.y == entity->gravity) ?
-                0 : entity->vel.y * time_dec);
+                -entity->gravity : entity->vel.y * time_dec);
             entity->timer += delta_time;
             entity->frame = (entity->timer / entity->frame_delay) & 3;
             sfSprite_setPosition(entity->sprite[entity->frame], pos);
@@ -35,12 +35,12 @@ static void blit_player(data_storage_t *data, entity_t *player,
     const float dec, long long delta_time)
 {
     const float time_dec = 0.00002f * (data->last_refresh - data->last_update)
-        - 0.6f;
+        - 1.f;
     sfVector2f pos = player->pos.v1;
 
     pos.x += dec + player->vel.x * time_dec;
-    if (player->vel.y != player->gravity)
-        pos.y += player->vel.y * time_dec;
+    pos.y += ((player->vel.y == player->gravity) ?
+        -player->gravity : player->vel.y * time_dec);
     player->timer += delta_time;
     player->frame = (player->timer / player->frame_delay) & 3;
     sfSprite_setPosition(player->sprite[player->frame], pos);

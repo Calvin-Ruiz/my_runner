@@ -58,7 +58,7 @@ static int my_init_entities(data_storage_t *datas)
     datas->entitylists[5] = create_entitylist(4);
     my_init_entity_bases(datas);
     entitylist_append(datas->entitylists[4], new_instance(
-        datas->entities[datas->nb_entity - 1],
+        datas->entities[datas->nb_entity - 2],
         (pos_t) {(sfVector2f) {-64.f, 0}, (sfVector2f) {0, 0}},
         (sfVector2f) {25.6f, 0}, 0));
     if (!check_data_storage_content(datas))
@@ -69,7 +69,7 @@ static int my_init_entities(data_storage_t *datas)
 
 static int my_init(char **map, param_t *params, int nb_cols)
 {
-    data_storage_t *datas = init_data_storage(0, 11, 64, 6);
+    data_storage_t *datas = init_data_storage(0, 37, 64, 6);
     int tmp = create_window((sfVideoMode) {1280, 64 * (*map)[-1], 32},
         "My Runner", sfClose | sfResize, params->fps);
 

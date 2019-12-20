@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** MUL_my_runner
 ** File description:
-** blocs.c
+** blocs_1.c
 */
 #include <entitybase.h>
 
@@ -21,18 +21,13 @@ void my_gravity_inverter(entity_t *entity, entity_t *target)
     target->gravity = -target->gravity;
 }
 
-void my_jump_sphere(entity_t *self, entity_t *target)
+void my_ice(entity_t *self, entity_t *target)
 {
-    if (sfKeyboard_isKeyPressed(sfKeySpace)) {
-        self->health = 0;
-        target->vel.y = -9.f * target->gravity;
-    }
+    target->vel.y -= 0.01f;
 }
 
-void my_overjump_sphere(entity_t *self, entity_t *target)
+void my_stick(entity_t *self, entity_t *target)
 {
-    if (sfKeyboard_isKeyPressed(sfKeySpace)) {
-        self->health = 0;
-        target->vel.y = -11.f * target->gravity;
-    }
+    if (!sfKeyboard_isKeyPressed(sfKeySpace))
+        target->vel.y -= target->gravity * 1.01f;
 }

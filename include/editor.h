@@ -9,7 +9,6 @@
 #define EDITOR_H_
 
 #include "menu_bar.h"
-#include <data_storage.h>
 #include <internal_data.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -61,32 +60,43 @@ static inline int add_lines(data_storage_t *datas, int nb_cols_needed)
     return (0);
 }
 
-static inline void mouse_press(sfEvent event, menu_bar_t *menubar,
+static inline void mouse_press(sfRenderWindow *window, menu_bar_t *menubar,
     data_storage_t *datas, int col)
 {
-    int line = (int) (event.mouseButton.y * datas->coef_y) >> 6;
+    sfVector2i mousepos = sfMouse_getPositionRenderWindow(window);
+    int line = (int) (mousepos.y * datas->coef_y) >> 6;
+    int tmp = (int) (mousepos.x * datas->coef_x) >> 6;
+    if (tmp < 0 || tmp > 19 || line < 0 || line >= datas->map[0][-1])
+        return;
 
-    col += (int) (event.mouseButton.x * datas->coef_x) >> 6;
+    col += tmp;
     if (col >= datas->nb_cols) {
         if (add_lines(datas, col + 1)) {
             write(2, "Memory Error : Faild to allocate memory\n", 40);
             return;
         }
     }
-    if (event.mouseButton.button == 0) {
+    if (sfMouse_isButtonPressed(0)) {
         datas->map[col][line] = menubar->bloc_id[menubar->select_bloc];
-    } else if (event.mouseButton.button == 1)
+    } else if (sfMouse_isButtonPressed(1))
         datas->map[col][line] = 0;
 }
 
-static inline void mouse_wheel(sfEvent event, menu_bar_t *menubar)
+static inline void mouse_wheel(sfEvent event, menu_bar_t *menubar,
+    data_storage_t *datas)
 {
     if (event.mouseWheelScroll.delta > 0.f) {
-        if (menubar->select_bloc > 0)
-            menubar->select_bloc--;
+        menubar->select_bloc -= (sfKeyboard_isKeyPressed(sfKeyLShift)
+            || sfKeyboard_isKeyPressed(sfKeyRShift)) ? 4 : 1;
+        if (menubar->select_bloc < 1)
+            menubar->select_bloc = 1;
+        update_menu_bar_sprite(menubar, datas);
     } else {
-        if (menubar->select_bloc < 63)
-            menubar->select_bloc++;
+        menubar->select_bloc += (sfKeyboard_isKeyPressed(sfKeyLShift)
+            || sfKeyboard_isKeyPressed(sfKeyRShift)) ? 4 : 1;
+        if (menubar->select_bloc > 32)
+            menubar->select_bloc = 32;
+        update_menu_bar_sprite(menubar, datas);
     }
 }
 

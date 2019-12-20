@@ -55,6 +55,7 @@ int create_window(sfVideoMode mode, char *name, long int args, int fps)
         return (84);
     sfRenderWindow_setFramerateLimit(stor->window, fps);
     sfRenderWindow_setMouseCursorVisible(stor->window, sfFalse);
+    sfRenderWindow_requestFocus(stor->window);
     sfSprite_setTexture(datas->pause, datas->pause_skin, sfFalse);
     sfSprite_setTexture(datas->cursor, datas->cursor_skin, sfTrue);
     return (create_window_2(datas, stor));

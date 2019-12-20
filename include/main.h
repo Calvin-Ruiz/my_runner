@@ -35,12 +35,6 @@ void my_init_entity_bases(data_storage_t *datas);
 int map_editor(char **map, int nb_cols, int nb_lines_param,
     const char *filename);
 
-void my_jump(entity_t *self, entity_t *target);
-void my_kill(entity_t *self, entity_t *target);
-void my_gravity_inverter(entity_t *entity, entity_t *target);
-void my_jump_sphere(entity_t *self, entity_t *target);
-void my_overjump_sphere(entity_t *self, entity_t *target);
-
 static inline int apply_parameter(int i, char **args, param_t *parameters)
 {
     if (args[i][1] == 'f') {

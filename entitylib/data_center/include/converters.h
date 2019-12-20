@@ -8,8 +8,6 @@
 #ifndef CONVERTERS_H_
 #define CONVERTERS_H_
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 
 typedef union double_raw {
