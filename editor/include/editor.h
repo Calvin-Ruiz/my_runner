@@ -66,9 +66,9 @@ static inline void mouse_press(sfRenderWindow *window, menu_bar_t *menubar,
     sfVector2i mousepos = sfMouse_getPositionRenderWindow(window);
     int line = (int) (mousepos.y * datas->coef_y) >> 6;
     int tmp = (int) (mousepos.x * datas->coef_x) >> 6;
+
     if (tmp < 0 || tmp > 19 || line < 0 || line >= datas->map[0][-1])
         return;
-
     col += tmp;
     if (col >= datas->nb_cols) {
         if (add_lines(datas, col + 1)) {
@@ -76,10 +76,12 @@ static inline void mouse_press(sfRenderWindow *window, menu_bar_t *menubar,
             return;
         }
     }
-    if (sfMouse_isButtonPressed(0)) {
-        datas->map[col][line] = menubar->bloc_id[menubar->select_bloc];
-    } else if (sfMouse_isButtonPressed(1))
-        datas->map[col][line] = 0;
+    if (sfRenderWindow_hasFocus(window)) {
+        if (sfMouse_isButtonPressed(0)) {
+            datas->map[col][line] = menubar->bloc_id[menubar->select_bloc];
+        } else if (sfMouse_isButtonPressed(1))
+            datas->map[col][line] = 0;
+    }
 }
 
 static inline void mouse_wheel(sfEvent event, menu_bar_t *menubar,

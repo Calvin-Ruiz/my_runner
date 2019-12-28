@@ -18,9 +18,9 @@ void my_bubble(entity_t *self, entity_t *target)
 
 void my_cinetic_inverter(entity_t *self, entity_t *target)
 {
-    if (target->gravity < 0 && target->vel.x > 0)
+    if (target->gravity < 0 && target->vel.y > 0)
         target->vel.y = -target->vel.y;
-    else if (target->gravity > 0 && target->vel.x < 0)
+    else if (target->gravity > 0 && target->vel.y < 0)
         target->vel.y = -target->vel.y;
 }
 

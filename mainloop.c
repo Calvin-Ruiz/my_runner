@@ -17,13 +17,14 @@ int *load_line(data_storage_t *datas)
         return (&col);
     while (++i < col_len) {
         if (map[col][i]) {
-            pos_t pos = {(sfVector2f) {col * 64, i * 64},
-                (sfVector2f) {(col + 1) * 64, (i + 1) * 64}};
+            pos_t pos = {(sfVector2f) {datas->col, i * 64},
+                (sfVector2f) {datas->col + 64, (i + 1) * 64}};
             entity_t *entity = new_instance(datas->entities[map[col][i] & 63],
                 pos, (sfVector2f) {-0.1f, 0.f}, 0);
             entitylist_append(datas->entitylists[map[col][i] >> 6], entity);
         }
     }
+    datas->col += 64.f;
     return (&col);
 }
 
@@ -45,7 +46,7 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas)
         if (event.type == sfEvtKeyPressed)
             event_press(window, datas, event);
         else if (event.type == sfEvtKeyReleased)
-            event_release(datas->player->entity, event);
+            event_release(datas->player->entity, event, datas);
     }
     sfMutex_unlock(datas->my_lock);
 }

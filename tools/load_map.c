@@ -5,6 +5,8 @@
 ** load_map.c
 */
 #include "include/my_read.h"
+#include <entitybase.h>
+#include <data_storage.h>
 #include <string.h>
 
 static int my_opener(const char *filename)
@@ -44,15 +46,39 @@ static char **create_map(long int *len, int *nb_cols, char nb_lines_param)
     *map_2d = map + 1;
     *nb_cols = 1;
     *len = nb_lines_param + 1;
+    get_data_storage()->col = 0.f;
     return (map_2d);
 }
 
-char **load_map(const char *filename, long int *len, int *nb_cols,
+static char *my_entry_filename(void)
+{
+    char *buffer = malloc(128);
+    int size = 0;
+
+    write(1, "Entry your level name (e.g. map.lvl) : ", 39);
+    size = read(0, buffer, 128);
+    if (size < 5) {
+        write(1, "Invalid entry.\n", 15);
+        free(buffer);
+        return (NULL);
+    } else if (size == 128) {
+        write(1, "Too long name.\n", 15);
+        free(buffer);
+        return (NULL);
+    }
+    buffer[size] = '\0';
+    return (buffer);
+}
+
+char **load_map(char *filename, long int *len, int *nb_cols,
     char nb_lines_param)
 {
+    if (filename == NULL)
+        filename = my_entry_filename();
     int fd = my_opener(filename);
+    char **map_2d;
     if (fd == -1) {
-        char **map_2d = create_map(len, nb_cols, nb_lines_param);
+        map_2d = create_map(len, nb_cols, nb_lines_param);
         return (map_2d);
     }
     char *map = my_read(fd, len);
@@ -60,7 +86,7 @@ char **load_map(const char *filename, long int *len, int *nb_cols,
         return (NULL);
     const char nb_lines = *(map++);
     *nb_cols = *len / nb_lines;
-    char **map_2d = malloc(sizeof(void *) * (*nb_cols));
+    map_2d = malloc(sizeof(void *) * (*nb_cols));
     int i = -1;
     while (++i < *nb_cols) {
         map_2d[i] = map;

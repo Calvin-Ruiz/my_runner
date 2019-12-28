@@ -5,6 +5,7 @@
 ** blocs_1.c
 */
 #include <entitybase.h>
+#include <data_storage.h>
 
 void my_jump(entity_t *self, entity_t *target)
 {
@@ -28,6 +29,6 @@ void my_ice(entity_t *self, entity_t *target)
 
 void my_stick(entity_t *self, entity_t *target)
 {
-    if (!sfKeyboard_isKeyPressed(sfKeySpace))
+    if (!get_data_storage()->spacebar)
         target->vel.y -= target->gravity * 1.01f;
 }

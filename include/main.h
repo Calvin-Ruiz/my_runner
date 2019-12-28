@@ -9,13 +9,13 @@
 #define MAIN_H_
 
 #include "my_getnbr.h"
-#include "my_read.h"
+#include <my_read.h>
 #include <entitylib.h>
 #include <player.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "get_next_line.h"
+#include <get_next_line.h>
 
 typedef struct param {
     int fps;
@@ -28,7 +28,7 @@ typedef struct param {
     sfVector2u fen_size;
 } param_t;
 
-char **load_map(const char *filename, long int *len, int *nb_cols,
+char **load_map(char *filename, long int *len, int *nb_cols,
     char nb_cols_param);
 void mainloop(data_storage_t *datas);
 void my_init_entity_bases(data_storage_t *datas);

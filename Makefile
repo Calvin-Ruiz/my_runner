@@ -15,7 +15,8 @@ FILES = blocs/blocs_1.c \
 	blocs/portals_1.c \
 	blocs/portals_2.c \
 	blocs/sphere_1.c \
-	editor.c \
+	editor/editor.c \
+	editor/menu_bar.c \
 	entitylib/collider/collider.c \
 	entitylib/collider/collwith_2.c \
 	entitylib/collider/collwith.c \
@@ -38,17 +39,16 @@ FILES = blocs/blocs_1.c \
 	entitylib/entitylist.c \
 	entitylib/player.c \
 	entitylib/tools.c \
-	get_next_line.c \
-	load_map.c \
 	main.c \
 	mainloop.c \
-	menu_bar.c \
-	my_read.c
+	tools/get_next_line.c \
+	tools/load_map.c \
+	tools/my_read.c
 
 all :	$(NAME)
 
 $(NAME):
-	gcc -Ofast -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -Ofast -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -I tools/include
 
 clean:
 	rm -f *.o
@@ -77,15 +77,15 @@ sync:	pull	push
 
 debug:
 	clear
-	gcc -Ofast -o $(NAME) $(FILES) -Wall -Wextra -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -Ofast -o $(NAME) $(FILES) -Wall -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -I tools/include
 
 valgrind:
-	gcc -Ofast -g3 -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -Ofast -g3 -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -I tools/include
 
 update:
-	./mmkfile.sh MUL_my_runner my_runner
+	tools/mmkfile.sh MUL_my_runner my_runner
 
 $(LIB).a:
-	gcc -c $(LIB)/*\.c $(LIB)/*/*\.c -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include
+	gcc -c $(LIB)/*\.c $(LIB)/*/*\.c -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -I tools/include
 	ar rc $(LIB).a *\.o
 	rm -f *\.o

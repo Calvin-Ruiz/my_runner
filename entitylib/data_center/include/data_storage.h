@@ -35,6 +35,8 @@ typedef struct data_storage {
     long long coll_target;
     char **map;
     int nb_cols;
+    char spacebar;
+    int col;
 } data_storage_t;
 
 data_storage_t *get_data_storage(void);
