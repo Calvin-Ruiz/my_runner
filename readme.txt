@@ -1,6 +1,7 @@
 Finite runner created with CSFML.
 Based on Le-cube available on https://github.com/Calvin-Ruiz/Le-cube
 Developped by Calvin Ruiz
+Textures by Yohan Ruiz
 
 USAGE
   ./my_runner map.lvl

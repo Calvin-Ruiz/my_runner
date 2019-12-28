@@ -46,7 +46,6 @@ static char **create_map(long int *len, int *nb_cols, char nb_lines_param)
     *map_2d = map + 1;
     *nb_cols = 1;
     *len = nb_lines_param + 1;
-    get_data_storage()->col = 0.f;
     return (map_2d);
 }
 
@@ -77,6 +76,7 @@ char **load_map(char *filename, long int *len, int *nb_cols,
         filename = my_entry_filename();
     int fd = my_opener(filename);
     char **map_2d;
+    int i = -1;
     if (fd == -1) {
         map_2d = create_map(len, nb_cols, nb_lines_param);
         return (map_2d);
@@ -87,7 +87,6 @@ char **load_map(char *filename, long int *len, int *nb_cols,
     const char nb_lines = *(map++);
     *nb_cols = *len / nb_lines;
     map_2d = malloc(sizeof(void *) * (*nb_cols));
-    int i = -1;
     while (++i < *nb_cols) {
         map_2d[i] = map;
         map += nb_lines;

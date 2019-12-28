@@ -6,25 +6,27 @@
 */
 #include "include/mainloop.h"
 
-int *load_line(data_storage_t *datas)
+float *load_line(data_storage_t *datas)
 {
     unsigned char **map = (unsigned char **) datas->map;
-    static int col = -1;
+    static float col = 0.f;
     const unsigned char col_len = (*map)[-1];
     unsigned char i = -1;
 
-    if (++col >= datas->nb_cols)
-        return (&col);
+    if (++datas->col >= datas->nb_cols)
+        return (&datas->col);
     while (++i < col_len) {
-        if (map[col][i]) {
-            pos_t pos = {(sfVector2f) {datas->col, i * 64},
-                (sfVector2f) {datas->col + 64, (i + 1) * 64}};
-            entity_t *entity = new_instance(datas->entities[map[col][i] & 63],
+        if (map[datas->col][i]) {
+            pos_t pos = {(sfVector2f) {col, i * 64},
+                (sfVector2f) {col + 64, (i + 1) * 64}};
+            entity_t *entity = new_instance(
+                datas->entities[map[datas->col][i] & 63],
                 pos, (sfVector2f) {-0.1f, 0.f}, 0);
-            entitylist_append(datas->entitylists[map[col][i] >> 6], entity);
+            entitylist_append(datas->entitylists[map[datas->col][i] >> 6],
+                entity);
         }
     }
-    datas->col += 64.f;
+    col += 64.f;
     return (&col);
 }
 
@@ -69,6 +71,7 @@ void mainloop(data_storage_t *datas)
         datas->alive = 0;
         destroy_collider();
         destroy_displayer(datas);
-        *col_ptr = -1;
+        *col_ptr = 0.f;
+        datas->col = -1;
     }
 }
