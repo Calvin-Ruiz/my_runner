@@ -57,14 +57,53 @@ static inline int apply_parameter(int i, char **args, param_t *parameters)
     return (i);
 }
 
+static inline void remove_all_entities(entity_t **entities, const int len)
+{
+    int i = -1;
+
+    while (++i < len) {
+        if (entities[i]) {
+            free(entities[i]);
+            entities[i] = NULL;
+        }
+    }
+}
+
+static inline void reset_entities(entitylist_t **elists, entity_t *player,
+    char nb_lines)
+{
+    data_storage_t *datas = get_data_storage();
+    int j = -1;
+    entity_t *tmp = elists[4]->list[0];
+
+    elists[4]->list[0] = NULL;
+    while (++j < 6)
+        remove_all_entities(elists[j]->list, elists[j]->len);
+    tmp->pos.v1.x = -80.f;
+    elists[4]->list[0] = tmp;
+    player->health = 3;
+    player->pos.v1 = (sfVector2f) {256, 64 * (nb_lines - 2)};
+    player->pos.v2 = (sfVector2f) {320, 64 * (nb_lines - 1)};
+    player->gravity = 4.f;
+    player->vel.x = 25.6f;
+    player->vel.y = 0.f;
+    datas->next_shoot = 0;
+    datas->background1_pos.x = 0;
+    datas->background2_pos.x = 0;
+    datas->background3_pos.x = 0;
+    datas->old_dec = 0;
+}
+
 static inline int my_play(char **map, int nb_cols)
 {
     data_storage_t *datas = get_data_storage();
+    internal_data_t *dat = get_internal_data();
     int sizes[6] = {1, 1, 1, 1, 1, 1};
     int pos[6] = {0, 1, 2, 3, 4, 5};
-
+    reset_entities(datas->entitylists, datas->player->entity, map[0][-1]);
     datas->map = map;
     datas->nb_cols = nb_cols;
+    datas->alive = 1;
     if (init_heart_and_score(datas->textures[1], datas->textures[0]))
         return (84);
     if (init_collider(pos, sizes, datas, 20))
@@ -72,8 +111,10 @@ static inline int my_play(char **map, int nb_cols)
     sfThread_launch(datas->displayer);
     mainloop(datas);
     if (sfRenderWindow_isOpen(datas->window))
-        my_game_over(datas->window, get_internal_data(), datas);
+        my_game_over(datas->window, dat, datas, (datas->player->entity->health
+            == -2) ? dat->level_completed : dat->game_over);
     destroy_heart_and_score();
+    save_higher_score(datas);
     return (0);
 }
 

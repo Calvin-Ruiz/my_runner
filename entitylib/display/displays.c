@@ -8,7 +8,7 @@
 #include <data_storage.h>
 #include <internal_data.h>
 
-static void my_write_score(char *str1, char *str2, data_storage_t *datas)
+void my_write_score(char *str1, char *str2, data_storage_t *datas)
 {
     int score = datas->score;
     int higher_score = datas->higher_score;
@@ -24,27 +24,27 @@ static void my_write_score(char *str1, char *str2, data_storage_t *datas)
 }
 
 void my_game_over(sfRenderWindow *window, internal_data_t *datas,
-    data_storage_t *stor)
+    data_storage_t *stor, sfSprite *sprite)
 {
     sfClock *my_clock = sfClock_create();
     sfVector2f pos;
-    sfRenderWindow_drawSprite(window, datas->game_over, NULL);
+    sfRenderWindow_drawSprite(window, sprite, NULL);
     if (stor->score > stor->higher_score) {
-        pos.x = 650;
-        pos.y = 500;
+        pos.x = 360;
+        pos.y = stor->map[0][-1] * 32.f + 128.f;
         char str[] = "New best score !\nNow  : 00000000\nBest : 00000000";
         my_write_score(str + 31, str + 47, stor);
         sfText_setString(datas->score_text, str);
         sfText_setPosition(datas->score_text, pos);
         sfRenderWindow_drawText(window, datas->score_text, NULL);
-        pos.x = 1200;
-        pos.y = 716;
+        pos.x = 480;
+        pos.y = 8;
         sfText_setPosition(datas->score_text, pos);
     }
     sfRenderWindow_display(window);
     long long actual_time = sfClock_getElapsedTime(my_clock).microseconds;
-    if (actual_time < 2500000)
-        sfSleep((sfTime) {2500000 - actual_time});
+    if (actual_time < 3500000)
+        sfSleep((sfTime) {3500000 - actual_time});
     sfClock_destroy(my_clock);
 }
 

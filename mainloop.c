@@ -6,15 +6,23 @@
 */
 #include "include/mainloop.h"
 
+static float *check_player_pos(float *col, entity_t *player)
+{
+    if (player->pos.v1.x <= *col)
+        return (col);
+    player->health = -2;
+    return (col);
+}
+
 float *load_line(data_storage_t *datas)
 {
     unsigned char **map = (unsigned char **) datas->map;
-    static float col = 0.f;
+    static float col = -64.f;
     const unsigned char col_len = (*map)[-1];
     unsigned char i = -1;
 
     if (++datas->col >= datas->nb_cols)
-        return (&datas->col);
+        return (check_player_pos(&col, datas->player->entity));
     while (++i < col_len) {
         if (map[datas->col][i]) {
             pos_t pos = {(sfVector2f) {col, i * 64},
@@ -41,7 +49,8 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas)
             datas->alive = 0;
             destroy_collider();
             destroy_displayer(datas);
-            *load_line(datas) = -1;
+            *load_line(datas) = -64.f;
+            datas->col = -1;
             sfRenderWindow_close(datas->window);
             return;
         }
@@ -57,12 +66,12 @@ void mainloop(data_storage_t *datas)
 {
     sfRenderWindow *window = datas->window;
     int col = 0;
-    int *col_ptr = load_line(datas);
     sfTime test = {50000};
-
+    float *col_ptr = load_line(datas);
+    datas->player->entity->health = 3;
     datas->toggle = 0;
     datas->col = -1;
-    while (col++ < 20)
+    while (col++ < 21)
         load_line(datas);
     while (sfRenderWindow_isOpen(window)
         && datas->player->entity->health > 0) {
@@ -72,7 +81,7 @@ void mainloop(data_storage_t *datas)
     if (sfRenderWindow_isOpen(window)) {
         datas->alive = 0;
         destroy_collider();
-        destroy_displayer(datas);
-        *col_ptr = 0.f;
+        stop_displayer(datas);
+        *col_ptr = -64.f;
     }
 }

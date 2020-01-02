@@ -4,3 +4,21 @@ You can also use the graphical interface with ./my_runner
 
 map_name : the name of the map
 nb_lines : the number of lines in the level.
+
+Map format :
+    Each bloc is defined by one byte.
+    Data format :
+        The first byte is the number of lines in the level in byte format.
+        The rest of the file is all the data grouped by columns.
+        e.g. :
+            2 - l1c1 - l2c1
+              - l1c2 - l2c2
+              - l1c3 - l2c3
+        The number of columns is defined by the file lengh.
+    Bloc format :
+        The bloc ID is defined by the 6 first bits.
+        The bloc type is defined by the 2 last bits :
+            0 for solid static
+            1 for solid dynamic
+            2 for hollow static
+            3 for hollow dynamic

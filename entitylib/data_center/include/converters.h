@@ -22,17 +22,17 @@ typedef union float_raw {
 
 typedef union long_raw {
     long int value;
-    char raw[8];
+    char raw[sizeof(long int)];
 } long_to_raw_t;
 
 typedef union int_raw {
     int value;
-    char raw[4];
+    char raw[sizeof(int)];
 } int_to_raw_t;
 
 typedef union short_raw {
     short value;
-    char raw[2];
+    char raw[sizeof(short)];
 } short_to_raw_t;
 
 typedef union pos_raw {

@@ -13,7 +13,7 @@ void my_cinetic_boost_sphere(entity_t *self, entity_t *target)
 
     if (data->spacebar && target->size == data->entities[0]->size) {
         self->health = 0;
-        target->vel.y *= 1.5f
+        target->vel.y *= 1.5f;
     }
 }
 
@@ -33,7 +33,7 @@ void my_tp_sphere(entity_t *self, entity_t *target)
 
     if (data->spacebar && target->size == data->entities[0]->size) {
         self->health = 0;
-        target->vel.y = -8.f * target->gravity;
+        target->vel.y = -8.01f * target->gravity;
         if (target->gravity > 0) {
             target->pos.v1.y -= 320.f;
             target->pos.v2.y -= 320.f;

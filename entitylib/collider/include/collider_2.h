@@ -13,6 +13,7 @@ static inline void collide_player(collider_t *data)
     data->player->update(data->player);
     collwith_hollow_static(data->player, data);
     collwith_hollow_dynamic(data->player, data);
+    collwith_fired(data->player, data);
 }
 
 static inline void update_hollow(collider_t *data)
@@ -41,6 +42,33 @@ static inline void collide_all(collider_t *data)
     collide_mob(data);
     collide_player(data);
     update_hollow(data);
+}
+
+static inline void my_sync_with_display(data_storage_t *datas)
+{
+    datas->tref = datas->last_update - ((
+        (long long) datas->entitylists[4]->list[0]->pos.v1.x + 40)
+        * 1000000) / 512;
+}
+
+static inline void my_fix_fps(data_storage_t *datas)
+{
+    entity_t *entity;
+
+    if (datas->coll_target > datas->last_update)
+        sfSleep((sfTime) {datas->coll_target - datas->last_update});
+    else
+        my_sync_with_display(datas);
+    if ((datas->last_update & 63) == 0) {
+        entity = new_instance(datas->entities[33], datas->player->entity->pos,
+            (sfVector2f) {-1.5, 0}, 0);
+        if (entity != NULL) {
+            entity->pos.v1.x = datas->col * 64.f;
+            entity->gravity = datas->player->entity->gravity;
+            entity->pos.v1.y -= entity->gravity * 4;
+            entitylist_append(datas->entitylists[5], entity);
+        }
+    }
 }
 
 #endif /* COLLIDER_2_H_ */

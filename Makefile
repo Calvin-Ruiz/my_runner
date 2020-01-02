@@ -13,8 +13,8 @@ FILES = blocs/blocs_1.c \
 	blocs/blocs_2.c \
 	blocs/my_init.c \
 	blocs/portals_1.c \
-	blocs/portals_2.c \
 	blocs/sphere_1.c \
+	blocs/sphere_2.c \
 	editor/editor.c \
 	editor/menu_bar.c \
 	entitylib/collider/collider.c \
@@ -38,6 +38,7 @@ FILES = blocs/blocs_1.c \
 	entitylib/entity.c \
 	entitylib/entitylist.c \
 	entitylib/player.c \
+	entitylib/sounds/sound_manager.c \
 	entitylib/tools.c \
 	main.c \
 	mainloop.c \

@@ -44,7 +44,7 @@ player_t *create_player(int nb_cols)
     if (player == NULL)
         return (NULL);
     player->entity = new_instance(datas->entities[0],
-        (pos_t) {(sfVector2f) {256, 64 * (nb_cols - 3)},
+        (pos_t) {(sfVector2f) {256, 64 * (nb_cols - 2)},
         (sfVector2f) {320, 64 * (nb_cols - 1)}}, (sfVector2f) {0, 0}, 0);
     if (player->entity == NULL)
         return (NULL);

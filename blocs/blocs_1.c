@@ -9,7 +9,7 @@
 
 void my_jump(entity_t *self, entity_t *target)
 {
-    target->vel.y = -11.f * target->gravity;
+    target->vel.y = -11.01f * target->gravity;
 }
 
 void my_kill(entity_t *self, entity_t *target)

@@ -75,7 +75,7 @@ void update_menu_bar_sprite(menu_bar_t *menubar, data_storage_t *datas)
         datas->textures[4 + menubar->select_bloc], sfFalse);
     if (menubar->select_bloc > 20) {
         my_rect.height = 192;
-        my_origin.y = 96;
+        my_origin.y = 32;
     }
     sfSprite_setTextureRect(menubar->sprite, my_rect);
     sfSprite_setColor(menubar->sprite, my_color);

@@ -38,6 +38,14 @@ typedef struct data_storage {
     char spacebar;
     int col;
     char toggle;
+    char no_action;
+    sfVector2f background1_pos;
+    sfVector2f background2_pos;
+    sfVector2f background3_pos;
+    float old_dec;
+    sfMusic *music;
+    float volume;
+    long long next_shoot;
 } data_storage_t;
 
 data_storage_t *get_data_storage(void);
@@ -47,5 +55,6 @@ int check_data_storage_content(data_storage_t *datas);
 void free_storage_content(data_storage_t *datas, int mask);
 void update_all(data_storage_t *datas);
 void import_sound(data_storage_t *datas, const char *filename, int pos);
+void save_higher_score(data_storage_t *datas);
 
 #endif /* DATA_STORAGE_H_ */

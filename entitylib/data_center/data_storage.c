@@ -16,12 +16,16 @@ data_storage_t *get_data_storage(void)
 static void init_data_storage_2(data_storage_t *datas)
 {
     int_to_raw_t conv;
+    float_to_raw_t conv2;
     int fd = open("saves/scoreboard.dat", O_RDONLY);
 
     datas->higher_score = 0;
+    datas->volume = 100.f;
     if (fd != -1) {
         if (read(fd, conv.raw, 4) == 4)
             datas->higher_score = conv.value;
+        if (read(fd, conv2.raw, sizeof(conv2.value)) == sizeof(conv2.value))
+            datas->volume = conv2.value;
         close(fd);
     }
 }

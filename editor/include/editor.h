@@ -14,6 +14,8 @@
 #include <fcntl.h>
 #include <string.h>
 
+int my_opener(const char *filename, int mode);
+
 static inline void display_bloc(sfRenderWindow *window, char bloc_id,
     sfVector2f pos, data_storage_t *datas)
 {

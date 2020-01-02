@@ -67,21 +67,24 @@ static void my_pause_loop(sfRenderWindow *window, data_storage_t *datas)
         while (sfRenderWindow_pollEvent(window, &event));
         check_window_size(window, datas);
         sfRenderWindow_display(window);
-        sfRenderWindow_setMouseCursorGrabbed(window, sfFalse);
     }
 }
 
 void my_pause_game(sfRenderWindow *window, data_storage_t *stor)
 {
+    return;
     sfClock *my_clock = sfClock_create();
     internal_data_t *datas = get_internal_data();
 
+    stor->no_action = 1;
     sfRenderWindow_drawSprite(window, datas->pause, NULL);
     sfRenderWindow_setMouseCursorVisible(window, sfTrue);
     sfRenderWindow_display(window);
     my_pause_loop(window, stor);
     sfRenderWindow_setMouseCursorVisible(window, sfFalse);
     stor->tref += sfClock_getElapsedTime(my_clock).microseconds;
+    stor->last_refresh += sfClock_getElapsedTime(my_clock).microseconds;
+    stor->no_action = 0;
     sfClock_destroy(my_clock);
 }
 

@@ -9,7 +9,7 @@
 #include <data_storage.h>
 #include <string.h>
 
-static int my_opener(const char *filename)
+static int my_opener_command(const char *filename, int mode)
 {
     char *begin = "level/";
     int name_len = -1;
@@ -17,8 +17,6 @@ static int my_opener(const char *filename)
     int fd;
     int i = -1;
 
-    if (filename == NULL)
-        return (-1);
     while (filename[++name_len] != '\0');
     filename -= 6;
     name_len += 7;
@@ -28,8 +26,26 @@ static int my_opener(const char *filename)
     i--;
     while (++i < name_len)
         full_path[i] = filename[i];
-    fd = open(full_path, O_RDONLY);
+    fd = open(full_path, mode & (~O_CREAT));
+    if (fd == -1 && mode | O_CREAT)
+        fd = open(full_path, mode, 0666);
     free(full_path);
+    return (fd);
+}
+
+int my_opener(const char *filename, int mode)
+{
+    int i = -1;
+    int fd;
+
+    if (filename == NULL)
+        return (-1);
+    while (filename[++i] != '\0' && filename[i] != '/');
+    if (filename[i] == '\0')
+        return (my_opener_command(filename, mode));
+    fd = open(filename, mode & (~O_CREAT));
+    if (fd == -1 && mode | O_CREAT)
+        fd = open(filename, mode, 0666);
     return (fd);
 }
 
@@ -51,21 +67,21 @@ static char **create_map(long int *len, int *nb_cols, char nb_lines_param)
 
 static char *my_entry_filename(void)
 {
-    char *buffer = malloc(128);
+    char *buffer = malloc(256);
     int size = 0;
 
     write(1, "Entry your level name (e.g. map.lvl) : ", 39);
-    size = read(0, buffer, 128);
-    if (size < 5) {
+    size = read(0, buffer, 256);
+    if (size < 6) {
         write(1, "Invalid entry.\n", 15);
         free(buffer);
         return (NULL);
-    } else if (size == 128) {
+    } else if (size == 256) {
         write(1, "Too long name.\n", 15);
         free(buffer);
         return (NULL);
     }
-    buffer[size] = '\0';
+    buffer[size - 1] = '\0';
     return (buffer);
 }
 
@@ -74,7 +90,7 @@ char **load_map(char *filename, long int *len, int *nb_cols,
 {
     if (filename == NULL)
         filename = my_entry_filename();
-    int fd = my_opener(filename);
+    int fd = my_opener(filename, O_RDONLY);
     char **map_2d;
     int i = -1;
     if (fd == -1) {

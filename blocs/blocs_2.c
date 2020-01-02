@@ -8,6 +8,7 @@
 
 void my_water(entity_t *self, entity_t *target)
 {
+    target->vel.y *= 0.9f;
     return;
 }
 

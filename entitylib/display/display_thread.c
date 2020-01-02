@@ -6,7 +6,7 @@
 */
 #include <entitylib.h>
 
-static inline void blit_entitylist(data_storage_t *data, entitylist_t *self,
+static void blit_entitylist(data_storage_t *data, entitylist_t *self,
     const float dec, long long delta_time)
 {
     short i = -1;
@@ -31,6 +31,20 @@ static inline void blit_entitylist(data_storage_t *data, entitylist_t *self,
     }
 }
 
+static void move_backgrounds(data_storage_t *datas, float dec)
+{
+    datas->background1_pos.x += (dec - datas->old_dec) / 8;
+    datas->background2_pos.x += (dec - datas->old_dec) / 4;
+    datas->background3_pos.x += (dec - datas->old_dec) / 2;
+    if (datas->background1_pos.x < -1280.f)
+        datas->background1_pos.x += 1280.f;
+    if (datas->background2_pos.x < -1280.f)
+        datas->background2_pos.x += 1280.f;
+    if (datas->background3_pos.x < -1280.f)
+        datas->background3_pos.x += 1280.f;
+    datas->old_dec = dec;
+}
+
 static void blit_player(data_storage_t *data, entity_t *player,
     const float dec, long long delta_time)
 {
@@ -52,7 +66,6 @@ static void blit_all_with_dec(data_storage_t *data, collider_t *datas,
     const float dec, long long delta_time)
 {
     short i = -1;
-
     while (++i < datas->nb_mob)
         blit_entitylist(data, datas->mob[i], dec, delta_time);
     blit_player(data, datas->player, dec, delta_time);
@@ -60,17 +73,18 @@ static void blit_all_with_dec(data_storage_t *data, collider_t *datas,
     while (++i < datas->nb_fired)
         blit_entitylist(data, datas->fired[i], dec, delta_time);
     i = -1;
-    while (++i < datas->nb_solid_static)
-        blit_entitylist(data, datas->solid_static[i], dec, delta_time);
-    i = -1;
     while (++i < datas->nb_solid_dynamic)
         blit_entitylist(data, datas->solid_dynamic[i], dec, delta_time);
     i = -1;
-    while (++i < datas->nb_hollow_static)
-        blit_entitylist(data, datas->hollow_static[i], dec, delta_time);
+    while (++i < datas->nb_solid_static)
+        blit_entitylist(data, datas->solid_static[i], dec, delta_time);
     i = -1;
     while (++i < datas->nb_hollow_dynamic)
         blit_entitylist(data, datas->hollow_dynamic[i], dec, delta_time);
+    i = -1;
+    while (++i < datas->nb_hollow_static)
+        blit_entitylist(data, datas->hollow_static[i], dec, delta_time);
+    move_backgrounds(data, dec);
 }
 
 void my_displayer(data_storage_t *datas)
@@ -78,13 +92,13 @@ void my_displayer(data_storage_t *datas)
     internal_data_t *internal_datas = get_internal_data();
     collider_t *coll = get_collider_data();
     const long long delay = 1000000 / datas->fps;
-    const float scroll = coll->my_scroll.x / 1000000;
+    const float scroll = 512.f / 1000000.f;
     sfRenderWindow *window = datas->window;
     long long target = sfClock_getElapsedTime(datas->clock).microseconds;
 
     datas->tref = target;
     while (datas->alive) {
-        blit_all_with_dec(datas, coll, scroll * (target - datas->tref), delay);
+        blit_all_with_dec(datas, coll, scroll * (datas->tref - target), delay);
         target += delay;
         display_health_and_score(window, datas, internal_datas);
         sfMutex_lock(datas->my_lock);
@@ -95,10 +109,4 @@ void my_displayer(data_storage_t *datas)
         if (target > datas->last_refresh)
             sfSleep((sfTime) {target - datas->last_refresh});
     }
-}
-
-void destroy_displayer(data_storage_t *datas)
-{
-    sfThread_wait(datas->displayer);
-    sfMutex_destroy(datas->my_lock);
 }

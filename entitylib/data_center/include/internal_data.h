@@ -13,12 +13,16 @@ typedef struct internal_data {
     sfTexture *cursor_skin;
     sfTexture *pause_skin;
     sfTexture *background_skin;
+    sfTexture *level_completed_skin;
     sfImage *icon;
     sfSprite *heart_sprite;
     sfSprite *game_over;
     sfSprite *pause;
     sfSprite *cursor;
     sfSprite *background;
+    sfSprite *background2;
+    sfSprite *background3;
+    sfSprite *level_completed;
     sfFont *text_font;
     sfText *score_text;
 } internal_data_t;

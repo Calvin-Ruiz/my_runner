@@ -30,7 +30,7 @@ entity_t *create_g_entity(sfTexture *t, uint_t *size, float fdelay, int hp)
     new->size = size;
     new->health = hp;
     new->frame_delay = fdelay * 1000000;
-    new->update = no_update;
+    new->update = update_g_entity;
     new->custom = no_custom;
     new->custom_x = no_custom;
     new->custom_y = no_custom;

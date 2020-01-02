@@ -65,9 +65,10 @@ char *my_read(const int port, long int *full_size)
     strchain_t *chain = my_reader(port, full_size, buff, size);
     if (chain == NULL)
         return (NULL);
-    char *buffer = malloc(*full_size);
+    char *buffer = malloc(*full_size + 1);
     if (buffer == NULL)
         return (NULL);
     my_extractor(chain, buffer, *full_size);
+    buffer[*full_size] = '\n';
     return (buffer);
 }

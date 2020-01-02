@@ -5,7 +5,6 @@
 ** editor.c
 */
 #include "include/editor.h"
-#include "include/menu_bar.h"
 #include <window_manager.h>
 
 static void display_all(sfRenderWindow *window, data_storage_t *datas, int col,
@@ -44,36 +43,12 @@ static void my_events(sfRenderWindow *window, data_storage_t *datas, int *col,
     mouse_press(window, menubar, datas, *col);
 }
 
-static int my_opener(const char *filename)
-{
-    char *begin = "level/";
-    int name_len = -1;
-    char *full_path;
-    int fd;
-    int i = -1;
-
-    if (filename == NULL)
-        return (-1);
-    while (filename[++name_len] != '\0');
-    filename -= 6;
-    name_len += 7;
-    full_path = malloc(name_len);
-    while (++i < 6)
-        full_path[i] = begin[i];
-    i--;
-    while (++i < name_len)
-        full_path[i] = filename[i];
-    fd = open(full_path, O_WRONLY | O_CREAT, 0666);
-    free(full_path);
-    return (fd);
-}
-
 static void save_map(char **map, int nb_cols, const char *filename,
     data_storage_t *datas)
 {
     const char nb_lines = map[0][-1];
     int i = -1;
-    int fd = my_opener(filename);
+    int fd = my_opener(filename, O_WRONLY | O_CREAT);
     int name_len = -1;
 
     if (fd == -1) {

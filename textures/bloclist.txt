@@ -35,3 +35,5 @@ textures/link portal.png
 textures/linked portal.png
 textures/skip portal.png
 textures/loop portal.png
+textures/shuriken.png
+textures/fire.png

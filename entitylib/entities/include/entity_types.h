@@ -18,5 +18,6 @@ entity_t *create_fired(sfTexture *t, uint_t *size, float fdelay, int hp);
 entity_t *create_hollow(sfTexture *t, uint_t *size, float fdelay,
     void (*custom)(entity_t *self, entity_t *target));
 void my_barrier(entity_t *self, entity_t *target);
+entity_t *create_g_entity(sfTexture *t, uint_t *size, float fdelay, int hp);
 
 #endif /* ENTITY_TYPES_H_ */

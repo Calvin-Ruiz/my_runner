@@ -20,6 +20,7 @@ void import_sound(data_storage_t *datas, const char *filename, int i)
         datas->sound_buffs[i] = NULL;
     }
     sfSound_setBuffer(datas->sounds[i], datas->sound_buffs[i]);
+    sfSound_setVolume(datas->sounds[i], datas->volume);
 }
 
 void update_all(data_storage_t *datas)
@@ -30,17 +31,19 @@ void update_all(data_storage_t *datas)
         entitylist_updates(datas->entitylists[i]);
 }
 
-static void save_higher_score(data_storage_t *datas)
+void save_higher_score(data_storage_t *datas)
 {
     int_to_raw_t conv;
+    float_to_raw_t conv2;
 
-    if (datas->higher_score > datas->score)
-        conv.value = datas->higher_score;
-    else
-        conv.value = datas->score;
+    if (datas->higher_score < datas->score)
+        datas->higher_score = datas->score;
+    conv.value = datas->higher_score;
+    conv2.value = datas->volume;
     int fd = open("saves/scoreboard.dat", O_WRONLY | O_CREAT, 0666);
     if (fd != -1) {
         write(fd, conv.raw, 4);
+        write(fd, conv2.raw, sizeof(conv2.value));
         close(fd);
     }
 }

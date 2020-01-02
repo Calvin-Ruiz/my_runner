@@ -47,7 +47,7 @@ static inline void static_collide(entity_t *entity, entity_t *solid)
 
 static inline void collide(entity_t *obj, entity_t *blc)
 {
-    if (obj == NULL
+    if (blc == NULL
         || obj->pos.v1.x > blc->pos.v2.x || obj->pos.v2.x < blc->pos.v1.x
         || obj->pos.v1.y > blc->pos.v2.y || obj->pos.v2.y < blc->pos.v1.y)
         return;
@@ -87,7 +87,7 @@ static inline void static_collide_with_custom(entity_t *entity, entity_t *solid)
 
 static inline void collide_with_custom(entity_t *obj, entity_t *blc)
 {
-    if (obj == NULL
+    if (blc == NULL
         || obj->pos.v1.x > blc->pos.v2.x || obj->pos.v2.x < blc->pos.v1.x
         || obj->pos.v1.y > blc->pos.v2.y || obj->pos.v2.y < blc->pos.v1.y)
         return;

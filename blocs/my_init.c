@@ -7,11 +7,13 @@
 #include "include/my_init.h"
 #include <data_storage.h>
 
-static void my_init_defaults(int i, data_storage_t *datas)
+static void my_init_defaults(int i, int j, data_storage_t *datas)
 {
     entity_t *my_unknown = create_surface(datas->textures[3],
         get_size(64, 64, 1), 0.12f, no_custom);
 
+    datas->entities[i++] = create_fired(datas->textures[j],
+        get_size(24, 8, 1), 2.f, 1);
     datas->entities[i] = create_fired(datas->textures[2],
         get_size(1, 64 * 64, 1), 2.f, 1073741824);
     datas->entities[i++]->custom = my_barrier;
@@ -20,11 +22,50 @@ static void my_init_defaults(int i, data_storage_t *datas)
         datas->entities[i++] = my_unknown;
 }
 
+static void my_init_entity_bases_4(int i, int j, data_storage_t *datas)
+{
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, my_gravity_inverter_portal);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, my_switch_gravity_portal);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, my_cinetic_boost_portal);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, my_cinetic_inverter_portal);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, no_custom);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, no_custom);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, no_custom);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, no_custom);
+    datas->entities[i++] = create_g_entity(datas->textures[j++],
+        get_size(64, 64, 1), 0.12f, 2);
+    my_init_defaults(i, j, datas);
+}
+
 static void my_init_entity_bases_3(int i, int j, data_storage_t *datas)
 {
     datas->entities[i++] = create_hollow(datas->textures[j++],
         get_size(64, 64, 1), 0.12f, my_gravity_inverter_sphere);
-    my_init_defaults(i, datas);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 64, 1), 0.12f, my_cinetic_inverter_sphere);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 64, 1), 0.12f, my_cinetic_boost_sphere);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 64, 1), 0.12f, my_tp_sphere);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 64, 1), 0.12f, my_creation_sphere);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, no_custom);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, no_custom);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, no_custom);
+    datas->entities[i++] = create_hollow(datas->textures[j++],
+        get_size(64, 192, 1), 0.12f, my_normal_gravity_portal);
+    my_init_entity_bases_4(i, j, datas);
 }
 
 static void my_init_entity_bases_2(int i, int j, data_storage_t *datas)

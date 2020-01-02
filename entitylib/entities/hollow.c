@@ -6,6 +6,11 @@
 */
 #include <entity.h>
 
+void hollow_damagement(entity_t *self)
+{
+    self->health--;
+}
+
 entity_t *create_hollow(sfTexture *t, uint_t *size, float fdelay,
     void (*custom)(entity_t *self, entity_t *target))
 {
@@ -18,9 +23,9 @@ entity_t *create_hollow(sfTexture *t, uint_t *size, float fdelay,
         return (NULL);
     create_sprite(new->sprite, t, size);
     new->size = size;
-    new->health = 16;
+    new->health = 60;
     new->frame_delay = fdelay * 1000000;
-    new->update = no_update;
+    new->update = hollow_damagement;
     new->custom = custom;
     new->custom_x = custom;
     new->custom_y = custom;

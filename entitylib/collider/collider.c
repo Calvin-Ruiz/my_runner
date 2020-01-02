@@ -4,7 +4,8 @@
 ** File description:
 ** collider.c
 */
-#include <entitybase.h>
+#include <entity.h>
+#include <entitylist.h>
 #include <data_storage.h>
 #include <collider.h>
 
@@ -24,12 +25,13 @@ static void collider_updater(collider_t *data)
     stor->coll_target = sfClock_getElapsedTime(clock).microseconds;
     while (data->alive) {
         collide_all(data);
-        do {
-            stor->coll_target += frame_delay;
-            stor->last_update = sfClock_getElapsedTime(clock).microseconds;
-            sfSleep((sfTime) {(stor->coll_target > stor->last_update) ?
-                stor->coll_target - stor->last_update : 0});
-        } while (stor->no_action);
+        while (stor->no_action)
+            sfSleep((sfTime) {frame_delay >> 2});
+        stor->coll_target += frame_delay;
+        stor->last_update = sfClock_getElapsedTime(clock).microseconds;
+        if ((nloop & 15) == 0)
+            my_sync_with_display(stor);
+        my_fix_fps(stor);
         if (!(nloop++ % 5) || (nloop % 5) == 2)
             load_line(stor);
     }
