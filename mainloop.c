@@ -60,6 +60,8 @@ void mainloop(data_storage_t *datas)
     int *col_ptr = load_line(datas);
     sfTime test = {50000};
 
+    datas->toggle = 0;
+    datas->col = -1;
     while (col++ < 20)
         load_line(datas);
     while (sfRenderWindow_isOpen(window)
@@ -72,6 +74,5 @@ void mainloop(data_storage_t *datas)
         destroy_collider();
         destroy_displayer(datas);
         *col_ptr = 0.f;
-        datas->col = -1;
     }
 }

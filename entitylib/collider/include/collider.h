@@ -104,6 +104,6 @@ static inline void collide_mob(collider_t *data)
     }
 }
 
-#include "player_collider.h"
+#include "collider_2.h"
 
 #endif /* COLLIDER_H_ */

@@ -2,11 +2,11 @@
 ** EPITECH PROJECT, 2019
 ** entitylib
 ** File description:
-** player_collider.h
+** collider_2.h
 */
 
-#ifndef PLAYER_COLLIDER_H_
-#define PLAYER_COLLIDER_H_
+#ifndef COLLIDER_2_H_
+#define COLLIDER_2_H_
 
 static inline void collide_player(collider_t *data)
 {
@@ -33,4 +33,14 @@ static inline void update_hollow(collider_t *data)
     }
 }
 
-#endif /* PLAYER_COLLIDER_H_ */
+static inline void collide_all(collider_t *data)
+{
+    collide_solid_static(data);
+    collide_solid_dynamic(data);
+    collide_fired(data);
+    collide_mob(data);
+    collide_player(data);
+    update_hollow(data);
+}
+
+#endif /* COLLIDER_2_H_ */

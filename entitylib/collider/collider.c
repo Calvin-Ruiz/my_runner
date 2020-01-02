@@ -20,18 +20,16 @@ static void collider_updater(collider_t *data)
     data_storage_t *stor = get_data_storage();
     sfClock *clock = data->data_clock;
     long int nloop = 0;
+
     stor->coll_target = sfClock_getElapsedTime(clock).microseconds;
     while (data->alive) {
-        stor->coll_target += frame_delay;
-        collide_solid_static(data);
-        collide_solid_dynamic(data);
-        collide_fired(data);
-        collide_mob(data);
-        collide_player(data);
-        update_hollow(data);
-        stor->last_update = sfClock_getElapsedTime(clock).microseconds;
-        if (stor->coll_target > stor->last_update)
-            sfSleep((sfTime) {stor->coll_target - stor->last_update});
+        collide_all(data);
+        do {
+            stor->coll_target += frame_delay;
+            stor->last_update = sfClock_getElapsedTime(clock).microseconds;
+            sfSleep((sfTime) {(stor->coll_target > stor->last_update) ?
+                stor->coll_target - stor->last_update : 0});
+        } while (stor->no_action);
         if (!(nloop++ % 5) || (nloop % 5) == 2)
             load_line(stor);
     }

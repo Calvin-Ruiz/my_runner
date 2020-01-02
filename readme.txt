@@ -16,8 +16,8 @@ OPTIONS
   -h		    print the usage and quit
 
 USER INTERACTIONS
-  SPACE_KEY	    jump or start
-  KEY_P		    toggle practice mode
+  SPACE_KEY	    jump or activate sphere
+  KEY_P		    toggle practice mode (not available yet)
   SHIFT		    step move of 10 instead of 1
   ESCAPE	    pause
   KEY_LEFT          left move
