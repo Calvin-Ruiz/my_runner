@@ -76,7 +76,7 @@ int map_editor(char **map, int nb_cols, int nb_lines_param,
 
     datas->map = map;
     datas->nb_cols = nb_cols;
-    while (sfRenderWindow_isOpen(window)) {
+    while (sfRenderWindow_isOpen(window) && col != -20) {
         sfRenderWindow_drawSprite(window, data->background, NULL);
         display_all(window, datas, col - 1, nb_lines);
         update_menu_bar(window, menubar, datas->entities);

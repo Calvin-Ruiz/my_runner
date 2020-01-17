@@ -19,7 +19,7 @@ USER INTERACTIONS
   SPACE_KEY	    jump or activate sphere
   KEY_P		    toggle practice mode	(not available yet)
   SHIFT		    step move of 10 instead of 1(editor only)
-  ESCAPE	    pause
+  ESCAPE	    pause, back editor		(not available yet)
   KEY_LEFT          left move
   KEY_RIGHT         right move
   LEFT_CLIC	    place bloc			(editor only)
@@ -28,4 +28,4 @@ USER INTERACTIONS
 		    switch page			(editor tools window)
   MOUSE_ROLL	    change selected bloc	(editor only)
 		    step move of 4 if SHIFT is pressed
-  KEY_P             shoot
+  KEY_C             shoot

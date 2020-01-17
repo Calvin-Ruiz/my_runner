@@ -35,9 +35,10 @@ static inline void event_press(sfEvent event, int *col)
         if (*col < 0)
             *col = 0;
     }
-    if (event.key.code == sfKeyRight) {
+    if (event.key.code == sfKeyRight)
         *col += (event.key.shift) ? 10 : 1;
-    }
+    if (event.key.code == sfKeyEscape)
+        *col = -20;
 }
 
 static inline int add_lines(data_storage_t *datas, int nb_cols_needed)
