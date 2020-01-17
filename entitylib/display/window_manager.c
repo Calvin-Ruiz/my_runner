@@ -62,7 +62,6 @@ int create_window(sfVideoMode mode, char *name, long int args, int fps)
 {
     data_storage_t *stor = get_data_storage();
     internal_data_t *datas = get_internal_data();
-
     stor->fps = fps;
     stor->displayer = sfThread_create(my_displayer, stor);
     stor->alive = 1;
@@ -74,9 +73,10 @@ int create_window(sfVideoMode mode, char *name, long int args, int fps)
     if (!stor->window || !datas->cursor || !datas->pause || !datas->cursor_skin
         || !datas->pause_skin || !stor->displayer)
         return (84);
+    stor->view = sfView_copy(sfRenderWindow_getView(stor->window));
     sfRenderWindow_setFramerateLimit(stor->window, fps);
     sfRenderWindow_setMouseCursorVisible(stor->window, sfFalse);
-    sfRenderWindow_requestFocus(stor->window);
+    sfRenderWindow_setView(stor->window, stor->view);
     sfSprite_setTexture(datas->pause, datas->pause_skin, sfFalse);
     sfSprite_setTexture(datas->cursor, datas->cursor_skin, sfTrue);
     return (create_window_2(datas, stor));

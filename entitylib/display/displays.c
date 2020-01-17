@@ -75,7 +75,7 @@ void display_health_and_score(sfRenderWindow *window, data_storage_t *stor,
     internal_data_t *datas)
 {
     sfVector2f pos;
-    int health = stor->player->entity->health;
+    int health = stor->player->entity->health >> 3;
     char str[] = "Your score : 00000000\nBest score : 00000000";
 
     my_write_score(str + 20, str + 42, stor);

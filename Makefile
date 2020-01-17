@@ -42,6 +42,7 @@ FILES = blocs/blocs_1.c \
 	entitylib/tools.c \
 	main.c \
 	mainloop.c \
+	menu.c \
 	tools/get_next_line.c \
 	tools/load_map.c \
 	tools/my_read.c
@@ -49,6 +50,9 @@ FILES = blocs/blocs_1.c \
 all :	$(NAME)
 
 $(NAME):
+	gcc -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -I tools/include
+
+fast:	fclean
 	gcc -Ofast -o $(NAME) $(FILES) -lcsfml-graphics -lcsfml-window -lcsfml-system -lcsfml-audio -I entitylib/include -I entitylib/collider/include -I entitylib/data_center/include -I entitylib/entities/include -I entitylib/display/include -I tools/include
 
 clean:

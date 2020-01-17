@@ -34,6 +34,7 @@ void mainloop(data_storage_t *datas);
 void my_init_entity_bases(data_storage_t *datas);
 int map_editor(char **map, int nb_cols, int nb_lines_param,
     const char *filename);
+int my_menu(param_t *params, char ***map, int nb_cols);
 
 static inline int apply_parameter(int i, char **args, param_t *parameters)
 {

@@ -13,7 +13,7 @@ int my_init_uninit(char **map, int nb_cols, param_t *params)
 
     if (sfRenderWindow_isOpen(datas->window)) {
         if (params->menu) {
-            write(1, "No menu\n", 8);
+            nb_cols = my_menu(params, &map, nb_cols);
         } else if (params->editor)
             nb_cols = map_editor(map, nb_cols, params->nb_lines, params->name);
         else

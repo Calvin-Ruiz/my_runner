@@ -8,6 +8,11 @@
 #include <entitylist.h>
 #include <data_storage.h>
 
+void my_damage_target(entity_t *self, entity_t *target)
+{
+    target->health--;
+}
+
 void update_g_entity(entity_t *self)
 {
     self->vel.y += self->gravity;

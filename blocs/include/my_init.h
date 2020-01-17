@@ -37,4 +37,6 @@ void my_switch_gravity_portal(entity_t *self, entity_t *target);
 void my_cinetic_boost_portal(entity_t *self, entity_t *target);
 void my_cinetic_inverter_portal(entity_t *self, entity_t *target);
 
+void my_damage_target(entity_t *self, entity_t *target);
+
 #endif /* MY_INIT_H_ */

@@ -14,7 +14,7 @@ static void blit_entitylist(data_storage_t *data, entitylist_t *self,
     entity_t *entity;
     sfRenderWindow *window = data->window;
     const float time_dec = 0.00002f * (data->last_refresh - data->last_update)
-        - -1.f;
+        - 1.f;
 
     while (++i < self->len) {
         entity = self->list[i];

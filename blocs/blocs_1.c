@@ -14,7 +14,7 @@ void my_jump(entity_t *self, entity_t *target)
 
 void my_kill(entity_t *self, entity_t *target)
 {
-    target->health -= 3;
+    target->health -= 24;
 }
 
 void my_gravity_inverter(entity_t *entity, entity_t *target)

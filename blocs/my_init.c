@@ -12,6 +12,7 @@ static void my_init_defaults(int i, int j, data_storage_t *datas)
     entity_t *my_unknown = create_surface(datas->textures[3],
         get_size(64, 64, 1), 0.12f, no_custom);
 
+    datas->entities[i++]->custom_y = my_damage_target;
     datas->entities[i++] = create_fired(datas->textures[j],
         get_size(24, 8, 1), 2.f, 1);
     datas->entities[i] = create_fired(datas->textures[2],
@@ -40,8 +41,9 @@ static void my_init_entity_bases_4(int i, int j, data_storage_t *datas)
         get_size(64, 192, 1), 0.12f, no_custom);
     datas->entities[i++] = create_hollow(datas->textures[j++],
         get_size(64, 192, 1), 0.12f, no_custom);
-    datas->entities[i++] = create_g_entity(datas->textures[j++],
-        get_size(64, 64, 1), 0.12f, 2);
+    datas->entities[i] = create_g_entity(datas->textures[j++],
+        get_size(64, 64, 1), 0.12f, 1);
+    datas->entities[i]->custom_x = my_damage_target;
     my_init_defaults(i, j, datas);
 }
 

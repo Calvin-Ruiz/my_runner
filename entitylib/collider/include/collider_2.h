@@ -47,7 +47,7 @@ static inline void collide_all(collider_t *data)
 static inline void my_sync_with_display(data_storage_t *datas)
 {
     datas->tref = datas->last_update - ((
-        (long long) datas->entitylists[4]->list[0]->pos.v1.x + 40)
+        (long long) datas->entitylists[4]->list[0]->pos.v1.x + 80)
         * 1000000) / 512;
 }
 

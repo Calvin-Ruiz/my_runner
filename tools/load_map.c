@@ -98,7 +98,7 @@ char **load_map(char *filename, long int *len, int *nb_cols,
         return (map_2d);
     }
     char *map = my_read(fd, len);
-    if (map == NULL)
+    if (map == NULL || *len < 1 || *len < *map)
         return (NULL);
     const char nb_lines = *(map++);
     *nb_cols = *len / nb_lines;

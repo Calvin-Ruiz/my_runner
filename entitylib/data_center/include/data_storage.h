@@ -10,6 +10,7 @@
 
 typedef struct data_storage {
     sfRenderWindow *window;
+    sfView *view;
     sfSoundBuffer **sound_buffs;
     sfSound **sounds;
     int nb_sounds;

@@ -68,7 +68,7 @@ void mainloop(data_storage_t *datas)
     int col = 0;
     sfTime test = {50000};
     float *col_ptr = load_line(datas);
-    datas->player->entity->health = 3;
+    datas->player->entity->health = 3 << 3;
     datas->toggle = 0;
     datas->col = -1;
     while (col++ < 21)
