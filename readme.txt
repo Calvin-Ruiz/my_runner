@@ -1,4 +1,4 @@
-Finite runner created with CSFML.
+Finite multi-threading runner created with CSFML.
 Originally based on Le-cube available on https://github.com/Calvin-Ruiz/Le-cube
 Developped by Calvin Ruiz
 Textures by Yohan Ruiz (excepted the background)
